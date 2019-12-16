@@ -70,8 +70,11 @@ while i < 5:
 
 mainloop()
 ```
+</br>
 
 * Save data onto USB
+
+PythonWriteUSB shows a small example of saving data into an excel file on a USB. The excel file has to already exist and should be saved as a .csv (comma-seperated values) file. The code below will save data in 6 columns. The first one will have the title "time" and the others have "sensor (1-5)".
 
 ```
 import os
