@@ -118,16 +118,11 @@ coord3 = 290, 290, 10, 290
 coord1 = 10, 10, 100, 100
 
 def now():
-    """ return (hour, minute, second) """
     time_now = time.localtime()
     return time_now.tm_hour, time_now.tm_min, time_now.tm_sec
 
 def center_rectangle(center, w, h):
-    """ calculate a new rectangle use a center point with width and height
-    center  a tuple or list -> (x, y)
-    w       width
-    h       height
-    """
+
     return (center[0] - w / 2, center[1] - h / 2,
             center[0] + w / 2, center[1] + h / 2)
 
@@ -136,10 +131,7 @@ def calc_point(angle, width, height):
             height * math.sin((- 90 + angle) * math.pi / 180))
 
 def offset_point(base, offset):
-    """ apply offset onto a base point
-    base    a tuple or list -> (x, y)
-    offset  a tuple or list -> (offset-x, offset-y)
-    """
+
     return (base[0] + offset[0], base[1] + offset[1])
 
 def draw_tick(canvas, center, w, h, angle, r1, r2, width, color):
@@ -152,10 +144,7 @@ def draw_tick(canvas, center, w, h, angle, r1, r2, width, color):
 def draw_pointer(canvas, center, w, h, angle, rate, width, color):
     offset_x, offset_y = calc_point(angle, w / 2 * rate, h / 2 * rate)
     point = offset_point(center, (offset_x, offset_y))
-
-    # center -> (x0, y0)
-    # point  -> (x1, y1)
-    # center + point -> (x0, y0, x1, y1)
+    
     canvas.create_line(center + point, width = width, fill = color)
 
 def draw_clock(canvas, coord, time):
@@ -191,6 +180,8 @@ root.mainloop()
 ```
 ## Main code
 
+Some of the functions found throughout the different files have two funtions that do the same. This is because they can be activated using a physical button and a button on screen. Physical buttons come with an extra parameter (event). This is why a seperate function has to be made. For example MainMidWindow has start and startB.
+
 * Main_File_FC
 
 To be able to make a graphical user interface that contains objects, a window has to be made. This is what happens in the main file using Tkinter.
@@ -215,14 +206,84 @@ Labels are created to display the time and the temperature. With the following c
         self.tempLabel.place(x=380,y=340)
 ```
 
+To check if the button that starts the timer has already been pressed before, a start function has been made. 
+```
+        def start(self,event):
+            global countcheck
+            countcheck = countcheck + 1
+            if (countcheck == 1):
+                self.timer()
+```
+
+After the check is done the timer has to be started and updated every second. Self.MainMidWindow.after(960,self.timer). This calls the same function after 960 miliseconds. Depending on how fast or slow your whole program runs you have to change this last statement.
+
+```
+        def timer(self):
+                if(count==0):
+                    self.d = str(self.t.get())
+                    h,m,s = map(int,self.d.split(":"))
+
+                    h = int(h)
+                    m=int(m)
+                    s= int(s)
+                    if(s<59):
+                        s+=1
+                    elif(s==59):
+                        s=0
+                        if(m<59):
+                            m+=1
+                        elif(m==59):
+                            h+=1
+                    if(h<10):
+                        h = str(0)+str(h)
+                    else:
+                        h= str(h)
+                    if(m<10):
+                        m = str(0)+str(m)
+                    else:
+                        m = str(m)
+                    if(s<10):
+                        s=str(0)+str(s)
+                    else:
+                        s=str(s)
+                    self.d=h+":"+m+":"+s
+
+
+                    self.t.set(self.d)
+                    if(count==0):
+                        self.MainMidWindow.after(960,self.timer)
+```
+
+Funtion round_rectangle is used to make rounded rectangles. Currently it is not being used but it could be used to make objects more visually pleasing.
+
+Function Update_val is the main function that is called. This function updates all the values in the canvas. First of all it checks if "gas" or "brake" is pressed and updates self.angle accordingly. 
+
 To simulate sensordata multiple spinboxes with variables to store the number in have been made. Also a submit button is needed to use the filled in number. This can be done with:
 ```
         self.spinBreak = StringVar()
         self.spinBox = Spinbox(self.MainMidWindow, from_=0, to=180, width = 5, bg = 'snow')
         self.spinBox.place(x=150,y=200)
+        
+        self.sensorButton = Button(self.MainMidWindow, text = 'Load', command = self.useSensor, bg = 'snow', height = 1)
+        self.sensorButton.place(x=220, y=100)
+```
+The submit button takes the value that was put into the spinbox and then displays that number and a color to show if that temperature is fine or is too hot. This is done in the function useSensor and looks like this:
+```
+        def useSensor(self):
+            self.spinTemp = float(self.spinBox.get())
+            if (float(self.spinTemp) < 90): 
+                self.temperature.set(str(self.spinBox.get())+" C"+degree_sign)
+                self.tempLabel.config(font=("Courier 30 bold"),bg='#%02x%02x%02x' % (75+int(round(self.spinTemp*2)), 75+int(round(self.spinTemp*2)), 255))
+                self.tempLabel.place(x=380,y=340)
+
+            else:
+                self.tempLabel.config(font=("Courier 30 bold"),bg='#%02x%02x%02x' % (255, 255+180-int(round(self.spinTemp)*2), 255+180-int(round(self.spinTemp)*2)))
+                self.tempLabel.place(x=210,y=340)
+                self.temperature.set(" Warning "+ str(self.spinTemp) +" C"+degree_sign)
 ```
 
-Further information can be found in comments in the file itself.
+
+Further explanation can be found in the comments in the file itself.
 
 * BotMidWindow
 
