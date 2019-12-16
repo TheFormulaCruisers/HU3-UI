@@ -193,11 +193,42 @@ root.mainloop()
 
 * Main_File_FC
 
-The main code does not contain much. The main file defines how big the user interface will be, then calls a function from one of the classes and loops this forever.
+To be able to make a graphical user interface that contains objects, a window has to be made. This is what happens in the main file using Tkinter.
+The main file defines how big the user interface will be, then calls a function from one of the classes and loops this forever.
+
 Further information can be found in comments in the file itself.
 
 * MainMidWindow
 
+MainMidWindow contains the software for the top half of the created window. The top half of the screen is used to display the most important information and the most urgent messages. It displays current speed, cooling fluid temperature, time passed, battery energy left and gas/brake paddle positions.
+
+To place objects in the window created in the main file, a canvas has to be made and placed in the window. This is done using:
+```
+        self.MainMidWindow = Canvas(self.window, width= 840, height=420,borderwidth = 0.0, bg='black', highlightthickness=0) 
+        self.MainMidWindow.pack_propagate(0)
+```
+
+Labels are created to display the time and the temperature. With the following code a label is created, setup and placed:
+```
+        self.tempLabel = Label(self.MainMidWindow, padx =10 , textvariable=self.temperature, bg = 'black', fg = 'black')
+        self.tempLabel.config(font=("Courier 20 bold"))
+        self.tempLabel.place(x=380,y=340)
+```
+
+To simulate sensordata multiple spinboxes with variables to store the number in have been made. Also a submit button is needed to use the filled in number. This can be done with:
+```
+        self.spinBreak = StringVar()
+        self.spinBox = Spinbox(self.MainMidWindow, from_=0, to=180, width = 5, bg = 'snow')
+        self.spinBox.place(x=150,y=200)
+```
+
+Further information can be found in comments in the file itself.
+
+* BotMidWindow
+
+BotMidWindow contains the software for the bottom half of the screen. This part of the screen is used for testing and preperation.
+
+Further information can be found in comments in the file itself.
 
 ## Deployment
 
