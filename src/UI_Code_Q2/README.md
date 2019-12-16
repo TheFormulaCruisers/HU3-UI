@@ -1,6 +1,6 @@
 # Code User Interface made in Quarter two 
 
-Main_File_FC uses the classes in MainMidWindow and BotMidWindow. The other files are codes used to understand certain parts in Main_File_FC.
+The main program is Main_File_FC. Main_File_FC will create a window that displays speed, cooling fluid temperature, accelerator position, break peddle position, steering wheel position and cooling fluid flow speed. Main_File_FC uses the classes MainMidWindow and BotMidWindow from MainMidWindow.py and BotMidWindow.py. The files found in Test_code_smaller_parts are software used to test and understand certain parts in Main_File_FC.
 
 ## Getting Started
 
@@ -33,8 +33,6 @@ End with an example of getting some data out of the system or using it for a lit
 
 In the folder Test_code_smaller_parts, three files can be found that were each used to test a different part of the main code.
 To run these files or your own tests, upload the code to the Raspberry Pi using a USB and run the code using an IDE.
-
-### Break down into end to end tests
 
 * Saving data onto Excel
 
@@ -192,13 +190,21 @@ update_clock()
 root.mainloop()
 ```
 ## Main code
-The main code has the following functions:
 
+* Main_File_FC
+
+The main code does not contain much. The main file defines how big the user interface will be, then calls a function from one of the classes and loops this forever.
 Further information can be found in comments in the file itself.
+
+* MainMidWindow
+
 
 ## Deployment
 
-This code can be copied onto a USB and then be put onto a Raspberry Pi. Make sure Main_File_FC, MainMidWindow and BotMidWindow are in the same directory, otherwise Main_File_FC cannot use the classes in MainMidWindow and BotMidWindow.
+This code can be copied onto a USB and then be put onto a Raspberry Pi. Make sure Main_File_FC, MainMidWindow. and BotMidWindow are in the same directory, otherwise Main_File_FC cannot use the classes in MainMidWindow and BotMidWindow.
+
+## Built With
+* [...](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
 
 ## Contributing
 
