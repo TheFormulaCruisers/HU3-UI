@@ -36,6 +36,8 @@ To run these files or your own tests, upload the code to the Raspberry Pi using 
 
 ### Break down into end to end tests
 
+* Excel test
+
 FCexcelTest shows a small example of storing data onto an excel file from python. The excel document will have two columns named "Operator" and "Number". Everytime the file is run the excel file should get the numbers 1-5 added to the first column and an extra 23 in the second column.
 
 ```from tkinter import *
@@ -69,31 +71,37 @@ while i < 5:
 mainloop()
 ```
 
-### And coding style tests
-
-Explain what these tests test and why
+* Save data onto USB
 
 ```
-Give an example
+import os
+import time 
+from time import sleep
+from datetime import datetime
+
+file = open("E:/test2.csv", "a")
+i=0
+if os.stat("E:/test2.csv").st_size == 0:
+        file.write("Time,Sensor1,Sensor2,Sensor3,Sensor4,Sensor5\n")
+while True:
+        i=i+1
+        now = datetime.now()
+        file.write(str(now)+","+str(i)+","+str(-i)+","+str(i-10)+","+str(i+5)+","+str(i*i)+"\n")
+        file.flush()
+        time.sleep(1)
+        if (i>=10):
+            break
+file.close()
 ```
 
 ## Deployment
 
 This code can be copied onto a USB and then be put onto a Raspberry Pi. Make sure Main_File_FC, MainMidWindow and BotMidWindow are in the same directory, otherwise Main_File_FC cannot use the classes in MainMidWindow and BotMidWindow.
 
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
 ## Contributing
 
 Please read [CONTRIBUTING.md](https://github.com/KevinEwoudLee/HU3-UI/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
 ## Authors
 
