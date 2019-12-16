@@ -1,6 +1,6 @@
 # Code User Interface made in Quarter two 
 
-The main program is Main_File_FC. Main_File_FC will create a window that displays speed, cooling fluid temperature, accelerator position, break peddle position, steering wheel position and cooling fluid flow speed. Main_File_FC uses the classes MainMidWindow and BotMidWindow from MainMidWindow.py and BotMidWindow.py. The files found in Test_code_smaller_parts are software used to test and understand certain parts in Main_File_FC.
+The main program is Main_File_FC. Main_File_FC will create a window that displays speed, cooling fluid temperature, accelerator position, brake peddle position, steering wheel position and cooling fluid flow speed. Main_File_FC uses the classes MainMidWindow and BotMidWindow from MainMidWindow.py and BotMidWindow.py. The files found in Test_code_smaller_parts are software used to test and understand certain parts in Main_File_FC.
 
 ## Getting Started
 
@@ -8,12 +8,12 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-You will need a python development environment if you want to test your code without working on the Raspberry Pi, for example spyder,PyCharm and Atom. Otherwise use the python IDE on the Raspberry Pi.
+You will need a python development environment if you want to test your code without working on the Raspberry Pi for example spyder, PyCharm and Atom. Otherwise use the python IDE on the Raspberry Pi.
 
 
 ### Installing
 
-To setup your own Raspberry Pi to work properly during your own tests, complete the following steps.
+To set up your own Raspberry Pi to work properly during your own tests, complete the following steps.
 
 Setting up your Raspberry Pi
 
@@ -232,7 +232,7 @@ Further information can be found in comments in the file itself.
 
 ## Deployment
 
-This code can be copied onto a USB and then be put onto a Raspberry Pi. Make sure Main_File_FC, MainMidWindow. and BotMidWindow are in the same directory, otherwise Main_File_FC cannot use the classes in MainMidWindow and BotMidWindow.
+This code can be copied onto a USB and then be put onto a Raspberry Pi. Make sure Main_File_FC, MainMidWindow and BotMidWindow are in the same directory, otherwise Main_File_FC cannot use the classes in MainMidWindow and BotMidWindow.
 
 ## Built With
 * [...](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
