@@ -1,6 +1,6 @@
 # Code User Interface made in Quarter two 
 
-Main_file uses MainMidWindow and BotMidWindow. The other files are codes used to understand certain parts in Main_file.
+Main_File_FC uses the classes in MainMidWindow and BotMidWindow. The other files are codes used to understand certain parts in Main_File_FC.
 
 ## Getting Started
 
@@ -8,7 +8,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-You will need a python development environment if you want to test your code without working on the Raspberry Pi, for example spyder. Otherwise use the python IDE on the Raspberry Pi.
+You will need a python development environment if you want to test your code without working on the Raspberry Pi, for example spyder,PyCharm and Atom. Otherwise use the python IDE on the Raspberry Pi.
 
 
 ### Installing
@@ -29,7 +29,7 @@ until finished
 
 End with an example of getting some data out of the system or using it for a little demo
 
-## Running the tests
+## Running tests
 
 In the folder Test_code_smaller_parts, three files can be found that were each used to test a different part of the main code.
 To run these files or your own tests, upload the code to the Raspberry Pi using a USB and run the code using an IDE.
@@ -38,7 +38,7 @@ To run these files or your own tests, upload the code to the Raspberry Pi using 
 
 * Saving data onto Excel
 
-FCexcelTest shows a small example of storing data onto an excel file from python. The excel document will have two columns named "Operator" and "Number". Everytime the file is run the excel file should get the numbers 1-5 added to the first column and an extra 23 in the second column.
+FCexcelTest shows a small example of storing data onto an excel file from python. The Excel document will have two columns named "Operator" and "Number". Everytime the file is run the excel file should get the numbers 1-5 added to the first column and an extra 23 in the second column.
 
 ```from tkinter import *
 import pandas as pd
