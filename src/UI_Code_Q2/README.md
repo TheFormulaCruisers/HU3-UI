@@ -7,7 +7,7 @@ The main program is Main_File_FC. Main_File_FC will create a window that display
 
 ### Prerequisites
 
-You will need the display made by the formula cruisers, a Raspberry Pi (RPi) and a python development environment (IDE). If you want to test your code without working on the Raspberry Pi, you will have to download an IDE on your computer for example spyder, PyCharm or Atom. Otherwise use the python IDE on the Raspberry Pi.
+You will need the display made by the formula cruisers, a Raspberry Pi (RPi) and a python integrated development environment (IDE). If you want to test your code without working on the Raspberry Pi, you will have to download an IDE on your computer for example spyder, PyCharm or Atom. Otherwise use the python IDE on the Raspberry Pi.
 
 
 ### Installing
