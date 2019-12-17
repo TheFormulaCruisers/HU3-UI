@@ -4,7 +4,7 @@ The main program is Main_File_FC. Main_File_FC will create a window that display
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. It also has a detailed explanation of the code used in the files.
 
 ### Prerequisites
 
@@ -180,7 +180,7 @@ root.mainloop()
 ```
 ## Main code
 
-Some of the functions found throughout the different files have two funtions that do the same. This is because they can be activated using a physical button and a button on screen. Physical buttons come with an extra parameter (event). This is why a seperate function has to be made. For example MainMidWindow has start and startB.
+Some of the functions found throughout the different files have two funtions that do the same. This is because they can be activated using a physical button and a button on screen. Physical buttons come with an extra parameter (event). This is why a seperate function has to be made. For example MainMidWindow has start and startB. If any code is unclear, further explanation can always be found in the comments in the file itself.
 
 * Main_File_FC
 
@@ -195,90 +195,124 @@ MainMidWindow contains the software for the top half of the window. The top half
 
 To place objects in the window, a canvas has to be made and placed in the window. This is done using:
 ```
-        self.MainMidWindow = Canvas(self.window, width= 840, height=420,borderwidth = 0.0, bg='black', highlightthickness=0) 
-        self.MainMidWindow.pack_propagate(0)
+self.MainMidWindow = Canvas(self.window, width= 840, height=420,borderwidth = 0.0, bg='black', highlightthickness=0) 
+self.MainMidWindow.pack_propagate(0)
 ```
 
 Labels are created to display the time and the temperature. With the following code a label is created, setup and placed:
 ```
-        self.tempLabel = Label(self.MainMidWindow, padx =10 , textvariable=self.temperature, bg = 'black', fg = 'black')
-        self.tempLabel.config(font=("Courier 20 bold"))
-        self.tempLabel.place(x=380,y=340)
+self.tempLabel = Label(self.MainMidWindow, padx =10 , textvariable=self.temperature, bg = 'black', fg = 'black')
+self.tempLabel.config(font=("Courier 20 bold"))
+self.tempLabel.place(x=380,y=340)
 ```
 
 To check if the button that starts the timer has already been pressed before, a start function has been made. 
 ```
-        def start(self,event):
-            global countcheck
-            countcheck = countcheck + 1
-            if (countcheck == 1):
-                self.timer()
+def start(self,event):
+    global countcheck
+    countcheck = countcheck + 1
+    if (countcheck == 1):
+        self.timer()
 ```
 
 After the button check is done, the timer has to be started and updated every second. Self.MainMidWindow.after(960,self.timer). This calls the same function after 960 miliseconds. Depending on how fast or slow your whole program runs, you have to change the 960 part of this last statement to change the time after which it recalls the function.
 
 ```
-        def timer(self):
-                if(count==0):
-                    self.d = str(self.t.get())
-                    h,m,s = map(int,self.d.split(":"))
+def timer(self):
+        if(count==0):
+            self.d = str(self.t.get())
+            h,m,s = map(int,self.d.split(":"))
 
-                    h = int(h)
-                    m=int(m)
-                    s= int(s)
-                    if(s<59):
-                        s+=1
-                    elif(s==59):
-                        s=0
-                        if(m<59):
-                            m+=1
-                        elif(m==59):
-                            h+=1
-                    if(h<10):
-                        h = str(0)+str(h)
-                    else:
-                        h= str(h)
-                    if(m<10):
-                        m = str(0)+str(m)
-                    else:
-                        m = str(m)
-                    if(s<10):
-                        s=str(0)+str(s)
-                    else:
-                        s=str(s)
-                    self.d=h+":"+m+":"+s
+            h = int(h)
+            m=int(m)
+            s= int(s)
+            if(s<59):
+                s+=1
+            elif(s==59):
+                s=0
+                if(m<59):
+                    m+=1
+                elif(m==59):
+                    h+=1
+            if(h<10):
+                h = str(0)+str(h)
+            else:
+                h= str(h)
+            if(m<10):
+                m = str(0)+str(m)
+            else:
+                m = str(m)
+            if(s<10):
+                s=str(0)+str(s)
+            else:
+                s=str(s)
+            self.d=h+":"+m+":"+s
 
 
-                    self.t.set(self.d)
-                    if(count==0):
-                        self.MainMidWindow.after(960,self.timer)
+            self.t.set(self.d)
+            if(count==0):
+                self.MainMidWindow.after(960,self.timer)
 ```
 
 Function round_rectangle is used to make rounded rectangles. Currently it is not being used but it could be used to make objects more visually pleasing.
-```
 
+Function Update_val is the main function that is called. This function updates all the values in the canvas. First of all it checks if "gas" (if(num == 0):) or "brake" (if(num == 1):) is pressed and updates the angle (self.angle) and arrow direction (self.arrow_dir) accordingly. 
 ```
+if(num == 0):
+    if(self.angle != 200):
+        self.angle += self.arrow_dir # .. was 1 (too small to see something)
+if(num == 1):
+    if(self.angle != -20):
+        self.angle -= self.arrow_dir # .. was 1 (too small to see something)
 
-Function Update_val is the main function that is called. This function updates all the values in the canvas. First of all it checks if "gas" or "brake" is pressed and updates self.angle accordingly. 
-```
-
+if(self.angle > 200 or self.angle <-20 ):
+    self.arrow_dir = -self.arrow_dir
 ```
 
 After this is done it it removes all objects that have a chance on changing on the canvas so it is fresh to place updated objects onto it.
 ```
-
+self.delete_Poly()                
+self.delete_rect()
+self.delete_text()
+if(self.line != 0):
+    self.MainMidWindow.delete(self.line)
+self.MainMidWindow.delete("all")    
+self.TempMainMidWindow.delete("all")
 ```
 
 Then it calculates how full the gas/brake bars have to be, takes that value and makes that into a text and updates how full the gas/brake bars have to be.
 ```
-        self.text.append(self.MainMidWindow.create_text(90, 305, text =  '{} {}'.format(int(((220-self.angle-20)/220)*100), "%") , font=("Purisan", 20), fill="snow"))
-        self.text.append(self.MainMidWindow.create_text(420, 305, text = '{} {}'.format(int(((self.angle+20)/220)*4000), "rpm"), font=("Purisan", 20), fill="snow")) 
-        self.text.append(self.MainMidWindow.create_text(750, 305, text = '{} {}'.format(int(((self.angle+20)/220)*100),"%"), font=("Purisan", 20), fill="snow"))
-        
-        self.rect.append(self.MainMidWindow.create_rectangle(40, 250, 140, 250-((220-self.angle-20)/220)*200, fill='red3'))
-        self.rect.append(self.MainMidWindow.create_rectangle(700, 250, 800, 250-((self.angle+20)/220)*200, fill='green2'))  
+self.text.append(self.MainMidWindow.create_text(90, 305, text =  '{} {}'.format(int(((220-self.angle-20)/220)*100), "%") , font=("Purisan", 20), fill="snow"))
+self.text.append(self.MainMidWindow.create_text(420, 305, text = '{} {}'.format(int(((self.angle+20)/220)*4000), "rpm"), font=("Purisan", 20), fill="snow")) 
+self.text.append(self.MainMidWindow.create_text(750, 305, text = '{} {}'.format(int(((self.angle+20)/220)*100),"%"), font=("Purisan", 20), fill="snow"))
+
+self.rect.append(self.MainMidWindow.create_rectangle(40, 250, 140, 250-((220-self.angle-20)/220)*200, fill='red3'))
+self.rect.append(self.MainMidWindow.create_rectangle(700, 250, 800, 250-((self.angle+20)/220)*200, fill='green2'))  
+```
+The speed display has to be created. This is done using the clock code that can be found under the header "running tests" shown at the start of the document. In the Update_val function it simple calls the functions tested in the clock code. 
+```
+self.make_speedmeter(self.coord)
 ```
 
+After the speed display has been created, the arrow pointing towards the speed has to be updated and made. This can only be done after the speed display has been made otherwise the arrow will be behind the speed display and cannot be seen anymore. This is done using:
+
+```
+self.pol = self.MainMidWindow.create_polygon(
+    [      [ self.centerx + self.L_E  * self.size * math.cos(math.radians(self.angle))  *0 ,  self.centery + self.L_E * self.size * math.sin(math.radians(self.angle)) *0 + 25 ], #bottom put to 0 to make it an arrow
+           [ self.centerx + self.L_S  * self.size * math.cos(math.radians(self.angle + 90)) , self.centery + self.L_S * self.size*  math.sin(math.radians(self.angle + 90)) + 25 ],
+           [ self.centerx + self.L_W  * self.size * math.cos(math.radians(self.angle + 180)), self.centery + self.L_W * self.size * math.sin(math.radians(self.angle + 180)) + 25 ] ,  
+           [ self.centerx + self.L_N *  self.size * math.cos(math.radians(self.angle + 270)), self.centery + self.L_N  * self.size * math.sin(math.radians(self.angle + 270)) + 25 ]
+    ] , fill='red'        ) 
+```
+
+The lenth and width of the arrow is determined in the initialisation of the class (def init(self, window)) with: 
+
+```
+self.L_N = 0.1
+self.L_E = 3
+self.L_S = 0.1
+self.L_W = 2.5
+```
 
 To simulate sensordata multiple spinboxes with variables to store the number in have been made. Also a submit button is needed to use the filled in number. This can be done with:
 ```
@@ -286,12 +320,12 @@ To simulate sensordata multiple spinboxes with variables to store the number in 
         self.spinBox = Spinbox(self.MainMidWindow, from_=0, to=180, width = 5, bg = 'snow')
         self.spinBox.place(x=150,y=200)
         
-        self.sensorButton = Button(self.MainMidWindow, text = 'Load', command = self.useSensor, bg = 'snow', height = 1)
+        self.sensorButton = Button(self.MainMidWindow, text = 'Load', command = self.useSensorData, bg = 'snow', height = 1)
         self.sensorButton.place(x=220, y=100)
 ```
-The submit button takes the value that was put into the spinbox and then displays that number and a color to show if that temperature is fine or is too hot. This is done in the function useSensor and looks like this:
+The submit button takes the value that was put into the spinbox and then displays that number and a color to show if that temperature is fine or is too hot. This is done in the function useSensorData and looks like this:
 ```
-        def useSensor(self):
+        def useSensorData(self):
             self.spinTemp = float(self.spinBox.get())
             if (float(self.spinTemp) < 90): 
                 self.temperature.set(str(self.spinBox.get())+" C"+degree_sign)
@@ -305,7 +339,7 @@ The submit button takes the value that was put into the spinbox and then display
 ```
 
 
-Further explanation can be found in the comments in the file itself.
+
 
 * BotMidWindow
 
