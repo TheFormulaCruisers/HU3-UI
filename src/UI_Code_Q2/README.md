@@ -1,6 +1,6 @@
 # Code user interface made in quarter two 
 
-The main program is Main_File_FC. Main_File_FC will create a window that displays speed, cooling fluid temperature, accelerator position, brake peddle position, steering wheel position and cooling fluid flow speed. Main_File_FC uses the classes MainMidWindow and BotMidWindow from MainMidWindow.py and BotMidWindow.py. The files found in Test_code_smaller_parts are software used to test and understand certain parts in Main_File_FC.
+The main program is Main_File_FC. Main_File_FC will create a window that displays current traveling speed, cooling fluid temperature, accelerator position, brake peddle position, steering wheel position and cooling fluid flow speed. Main_File_FC uses the classes MainMidWindow and BotMidWindow from MainMidWindow.py and BotMidWindow.py. The files found in Test_code_smaller_parts are software used to test and understand certain parts in Main_File_FC.
 
 ## Getting Started
 
