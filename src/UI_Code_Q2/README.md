@@ -13,21 +13,7 @@ You will need the display made by the formula cruisers, a Raspberry Pi and a pyt
 
 ### Installing
 
-To set up your own Raspberry Pi to work properly during your own tests, complete the following steps.
-
-Setting up your Raspberry Pi
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
+The IDE I used was Spyder. Information about installation and how to use it can be found on their website [(Spyder)](https://www.spyder-ide.org/).
 
 ## Running tests
 
@@ -343,8 +329,9 @@ BotMidWindow contains the software for the bottom half of the screen. This part 
 
 
 ## Deployment
+This code can be copied/downloaded onto your own computer and then run from your Python IDE.
 
-This code can be copied onto a USB and then be put onto a Raspberry Pi. Make sure Main_File_FC, MainMidWindow and BotMidWindow are in the same directory, otherwise Main_File_FC cannot use the classes in MainMidWindow and BotMidWindow.
+Testing this code on a Raspberry Pi can be done by copying the code onto a USB and then be putting it onto a Raspberry Pi. Make sure Main_File_FC, MainMidWindow and BotMidWindow are in the same directory, otherwise Main_File_FC cannot use the classes in MainMidWindow and BotMidWindow.
 
 ## Built With
 * [Raspberry Pi](https://www.raspberrypi.org/) - The controller used
