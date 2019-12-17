@@ -21,7 +21,7 @@ To run these files or your own tests, upload the code to the Raspberry Pi using 
 
 * Saving data onto Excel
 
-FCexcelTest shows a small example of storing data onto an excel file from python. The Excel document will have two columns named "Operator" and "Number". Everytime the file is run the excel file should get the numbers 1-5 added to the first column and an extra 23 in the second column.
+FCexcelTest shows a small example of storing data into an excel file from python. The Excel document will have two columns named "Operator" and "Number". Everytime the file is run the excel file should get the numbers 1-5 added to the first column and an extra 23 in the second column.
 
 ```from tkinter import *
 import pandas as pd
