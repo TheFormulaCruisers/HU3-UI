@@ -80,7 +80,7 @@ while True:
 file.close()
 ```
 
-* Making a decently looking speed meter
+* Making a better looking speed meter
 
 The file clock_test is code taken from an example someone else made [(Clock Code)](https://gist.github.com/Inndy/c2580aa5f5016755d076). The code to make a clock has been used to create a speed display. The code below wil make a circle arc from -30 degrees up to 210 degrees (start = -30, extent = 240). with the "for i in range(-108, 109, 6):" loop a line is created every 6 degrees and a thick line every 36 degrees.
 
