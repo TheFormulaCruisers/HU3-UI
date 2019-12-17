@@ -8,7 +8,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-You will need a python development environment if you want to test your code without working on the Raspberry Pi for example spyder, PyCharm and Atom. Otherwise use the python IDE on the Raspberry Pi.
+You will need the display made by the formula cruisers, a Raspberry Pi and a python development environment if you want to test your code without working on the Raspberry Pi for example spyder, PyCharm or Atom. Otherwise use the python IDE on the Raspberry Pi.
 
 
 ### Installing
@@ -31,7 +31,7 @@ End with an example of getting some data out of the system or using it for a lit
 
 ## Running tests
 
-In the folder Test_code_smaller_parts, three files can be found that were each used to test a different part of the main code.
+In the folder Test_code_smaller_parts, four files can be found that each were used to test a different part of the main code.
 To run these files or your own tests, upload the code to the Raspberry Pi using a USB and run the code using an IDE.
 
 * Saving data onto Excel
@@ -72,7 +72,7 @@ mainloop()
 
 * Saving data onto USB
 
-PythonWriteUSB shows a small example of saving data into an excel file on a USB. The excel file has to already exist and should be saved as a .csv (comma-seperated values) file. The code below will save data in 6 columns. The first one will have the title "time" and the others have "sensor (1-5)".
+PythonWriteUSB shows a small example of saving data into an excel file on a USB. The excel file has to already exist and should be saved as a .csv (comma-seperated values) file. The code below will save data into 6 columns and the number of rows will be equal to the data that was already in the file with an adition of ten rows. The first column will have the title "time" and the others have "sensor (1-5)".
 
 ```
 import os
@@ -191,9 +191,9 @@ Further information can be found in comments in the file itself.
 
 * MainMidWindow
 
-MainMidWindow contains the software for the top half of the created window. The top half of the screen is used to display the most important information and the most urgent messages. It displays current speed, cooling fluid temperature, time passed, battery energy left and gas/brake paddle positions.
+MainMidWindow contains the software for the top half of the window. The top half of the screen is used to display the most important information and the most urgent messages. It displays the current speed, the cooling fluid temperature, the time that has passed, how much battery energy is left and the gas/brake paddle positions. A timer is displayed so the driver knows how much time has passed since the race started. This combined with the batteries energy level and the temperature level will tell if the driver is asking too much from the car or not.
 
-To place objects in the window created in the main file, a canvas has to be made and placed in the window. This is done using:
+To place objects in the window, a canvas has to be made and placed in the window. This is done using:
 ```
         self.MainMidWindow = Canvas(self.window, width= 840, height=420,borderwidth = 0.0, bg='black', highlightthickness=0) 
         self.MainMidWindow.pack_propagate(0)
@@ -215,7 +215,7 @@ To check if the button that starts the timer has already been pressed before, a 
                 self.timer()
 ```
 
-After the check is done the timer has to be started and updated every second. Self.MainMidWindow.after(960,self.timer). This calls the same function after 960 miliseconds. Depending on how fast or slow your whole program runs you have to change this last statement.
+After the button check is done, the timer has to be started and updated every second. Self.MainMidWindow.after(960,self.timer). This calls the same function after 960 miliseconds. Depending on how fast or slow your whole program runs, you have to change the 960 part of this last statement to change the time after which it recalls the function.
 
 ```
         def timer(self):
@@ -254,9 +254,31 @@ After the check is done the timer has to be started and updated every second. Se
                         self.MainMidWindow.after(960,self.timer)
 ```
 
-Funtion round_rectangle is used to make rounded rectangles. Currently it is not being used but it could be used to make objects more visually pleasing.
+Function round_rectangle is used to make rounded rectangles. Currently it is not being used but it could be used to make objects more visually pleasing.
+```
+
+```
 
 Function Update_val is the main function that is called. This function updates all the values in the canvas. First of all it checks if "gas" or "brake" is pressed and updates self.angle accordingly. 
+```
+
+```
+
+After this is done it it removes all objects that have a chance on changing on the canvas so it is fresh to place updated objects onto it.
+```
+
+```
+
+Then it calculates how full the gas/brake bars have to be, takes that value and makes that into a text and updates how full the gas/brake bars have to be.
+```
+        self.text.append(self.MainMidWindow.create_text(90, 305, text =  '{} {}'.format(int(((220-self.angle-20)/220)*100), "%") , font=("Purisan", 20), fill="snow"))
+        self.text.append(self.MainMidWindow.create_text(420, 305, text = '{} {}'.format(int(((self.angle+20)/220)*4000), "rpm"), font=("Purisan", 20), fill="snow")) 
+        self.text.append(self.MainMidWindow.create_text(750, 305, text = '{} {}'.format(int(((self.angle+20)/220)*100),"%"), font=("Purisan", 20), fill="snow"))
+        
+        self.rect.append(self.MainMidWindow.create_rectangle(40, 250, 140, 250-((220-self.angle-20)/220)*200, fill='red3'))
+        self.rect.append(self.MainMidWindow.create_rectangle(700, 250, 800, 250-((self.angle+20)/220)*200, fill='green2'))  
+```
+
 
 To simulate sensordata multiple spinboxes with variables to store the number in have been made. Also a submit button is needed to use the filled in number. This can be done with:
 ```
@@ -296,7 +318,8 @@ Further information can be found in comments in the file itself.
 This code can be copied onto a USB and then be put onto a Raspberry Pi. Make sure Main_File_FC, MainMidWindow and BotMidWindow are in the same directory, otherwise Main_File_FC cannot use the classes in MainMidWindow and BotMidWindow.
 
 ## Built With
-* [...](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
+* [Raspberry Pi](https://www.raspberrypi.org/) - The controller used
+* [Spyder](https://www.spyder-ide.org/) - The IDE used
 
 ## Contributing
 
