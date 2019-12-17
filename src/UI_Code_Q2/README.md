@@ -21,7 +21,7 @@ To run these files or your own tests, upload the code to the Raspberry Pi using 
 
 * Saving data onto Excel
 
-FCexcelTest shows a small example of storing data into an excel file from python. The Excel document will have two columns named "Operator" and "Number". Everytime the file is run the excel file should get the numbers 1-5 added to the first column and an extra 23 in the second column.
+The file FCexcelTest shows a small example of storing data into an excel file from python. The Excel document will have two columns named "Operator" and "Number". Everytime the file is run the excel file should get the numbers 1-5 added to the first column and an extra 23 in the second column.
 
 ```from tkinter import *
 import pandas as pd
@@ -57,7 +57,7 @@ mainloop()
 
 * Saving data onto USB
 
-PythonWriteUSB shows a small example of saving data into an excel file on a USB. The excel file has to already exist and should be saved as a .csv (comma-seperated values) file. The code below will save data into 6 columns and the number of rows will be equal to the data that was already in the file with an adition of ten rows. The first column will have the title "time" and the others have "sensor (1-5)".
+The file PythonWriteUSB shows a small example of saving data into an excel file on a USB. The excel file has to already exist and should be saved as a .csv (comma-seperated values) file. The code below will save data into 6 columns and the number of rows will be equal to the data that was already in the file with an adition of ten rows. The first column will have the title "time" and the others have "sensor (1-5)".
 
 ```
 import os
@@ -82,7 +82,7 @@ file.close()
 
 * Making a decently looking speed meter
 
-Clock_test is code taken from an example someone else made [(Clock Code)](https://gist.github.com/Inndy/c2580aa5f5016755d076). The code to make a clock has been used to create a speed display. The code below wil make a circle arc from -30 degrees up to 210 degrees (start = -30, extent = 240). with the "for i in range(-108, 109, 6):" loop a line is created every 6 degrees and a thick line every 36 degrees.
+The file clock_test is code taken from an example someone else made [(Clock Code)](https://gist.github.com/Inndy/c2580aa5f5016755d076). The code to make a clock has been used to create a speed display. The code below wil make a circle arc from -30 degrees up to 210 degrees (start = -30, extent = 240). with the "for i in range(-108, 109, 6):" loop a line is created every 6 degrees and a thick line every 36 degrees.
 
 ```
 import time
@@ -166,7 +166,7 @@ root.mainloop()
 
 * SPI communication with C3
 
-SPI communication FC is adjusted code from [SPI](https://learn.sparkfun.com/tutorials/raspberry-pi-spi-and-i2c-tutorial/all) This code will send information to the C3 and then it will ask for a return message. the sent message is msg and the returned value is stored in result. More information can be found by clicking on the link.
+The file SPI communication FC is adjusted code from [SPI](https://learn.sparkfun.com/tutorials/raspberry-pi-spi-and-i2c-tutorial/all) This code will send information to the C3 and then it will ask for a return message. the sent message is msg and the returned value is stored in result. More information can be found by clicking on the link.
 
 ```
 import time
