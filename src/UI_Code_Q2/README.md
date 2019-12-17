@@ -166,7 +166,7 @@ root.mainloop()
 
 * SPI communication with C3
 
-The file SPI communication FC is adjusted code from [SPI tutorial](https://learn.sparkfun.com/tutorials/raspberry-pi-spi-and-i2c-tutorial/all). This code will send information to the C3 and then it will ask for a return message. The sent message is "msg" and the returned value is stored in "result". More information can be found by clicking on the link.
+The file SPI communication FC is adjusted code from this [SPI tutorial](https://learn.sparkfun.com/tutorials/raspberry-pi-spi-and-i2c-tutorial/all). This code will send information to the C3 and then it will ask for a return message. The sent message is "msg" and the returned value is stored in "result". More information can be found by clicking on the link.
 
 ```
 import time
