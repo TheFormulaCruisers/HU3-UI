@@ -57,7 +57,7 @@ mainloop()
 
 * Saving data onto USB
 
-The file PythonWriteUSB shows a small example of saving data into an excel file on a USB. The excel file has to already exist and should be saved as a .csv (comma-seperated values) file. The code below will save data into 6 columns and the number of rows will be equal to the data that was already in the file with an adition of ten rows. The first column will have the title "time" and the others have "sensor (1-5)".
+The file PythonWriteUSB shows a small example of saving data into an excel file on a USB. The excel file has to already exist and should be saved as a ".csv" (comma-seperated values) file. The code below will save data into 6 columns and the number of rows will be equal to the data that was already in the file with an adition of ten rows. The first column will have the title "time" and the others have "sensor (1-5)".
 
 ```
 import os
