@@ -7,12 +7,12 @@ The main program is Main_File_FC. Main_File_FC will create a window that display
 
 ### Prerequisites
 
-You will need the display made by the formula cruisers, a Raspberry Pi and a python development environment if you want to test your code without working on the Raspberry Pi for example spyder, PyCharm or Atom. Otherwise use the python IDE on the Raspberry Pi.
+You will need the display made by the formula cruisers, a Raspberry Pi (RPi) and a python development environment (IDE). If you want to test your code without working on the Raspberry Pi, you will have to download an IDE on your computer for example spyder, PyCharm or Atom. Otherwise use the python IDE on the Raspberry Pi.
 
 
 ### Installing
 
-The IDE at was used to test out the written code was Spyder. Information about installation and how to use it can be found on their website [(Spyder)](https://www.spyder-ide.org/).
+The IDE that was used to test out the written code was Spyder. Information about installation and how to use it can be found on their website [(Spyder)](https://www.spyder-ide.org/).
 
 ## Running tests
 
@@ -163,6 +163,34 @@ def update_clock():
 update_clock()
 root.mainloop()
 ```
+
+* SPI communication with C3
+
+SPI communication FC is adjusted code from [SPI](https://learn.sparkfun.com/tutorials/raspberry-pi-spi-and-i2c-tutorial/all) This code will send information to the C3 and then it will ask for a return message. the sent message is msg and the returned value is stored in result. More information can be found by clicking on the link.
+
+```
+import time
+import spidev
+
+bus = 0
+
+device = 1
+
+spi = spidev.SpiDev()
+
+spi.open(bus, device)
+
+spi.max_speed_hz = 500000
+spi.mode = 0
+
+msg = 2
+result = spi.xfer2(msg)
+print(result)
+time.sleep(5)
+
+spi.close()
+```
+
 ## Main code
 
 Some of the functions found throughout the different files have two funtions that do the same. This is because they can be activated using a physical button and a button on screen. Physical buttons come with an extra parameter (event). This is why a seperate function has to be made. For example MainMidWindow has start and startB. If any code is unclear, further explanation can always be found in the comments in the file itself.
