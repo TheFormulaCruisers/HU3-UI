@@ -13,7 +13,7 @@ You will need the display made by the formula cruisers, a Raspberry Pi and a pyt
 
 ### Installing
 
-The IDE I used was Spyder. Information about installation and how to use it can be found on their website [(Spyder)](https://www.spyder-ide.org/).
+The IDE at was used to test out the written code was Spyder. Information about installation and how to use it can be found on their website [(Spyder)](https://www.spyder-ide.org/).
 
 ## Running tests
 
