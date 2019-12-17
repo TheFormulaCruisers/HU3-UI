@@ -197,12 +197,12 @@ Some of the functions found throughout the different files have two funtions tha
 
 * Main_File_FC
 
-To be able to make a graphical user interface that contains objects, a window has to be made. This is what happens in the main file with the use of Tkinter. The main file defines how big the user interface window will be, then calls a function "display" fromthe class "Layout", which can be found in the file "BotMidWindow", and loops this forever.
+To be able to make a graphical user interface that contains objects, a window has to be made. This is what happens in the main file with the use of Tkinter. The main file defines how big the user interface window will be, then calls a function "display" from the class "Layout", which can be found in the file "BotMidWindow", and loops this forever.
 
 
 * MainMidWindow
 
-MainMidWindow contains the software for the top half of the window. The top half of the screen is used to display the most important information and the most urgent messages. It displays the current speed, the cooling fluid temperature, the time that has passed, how much battery energy is left and the gas/brake paddle positions. A timer is displayed so the driver knows how much time has passed since the race started. This combined with the batteries energy level and the temperature level will tell if the driver is asking too much from the car or not.
+MainMidWindow contains the software for the top half of the window. The top half of the screen is used to display the most important information and the most urgent messages. It displays the current speed, the cooling fluid temperature, the time that has passed, how much battery energy is left and the gas/brake paddle positions. A timer is displayed so the driver knows how much time has passed since the race started. This combined with the battery energy level and the temperature level will tell if the driver is asking too much from the car or not.
 
 To place objects in the window, a canvas has to be made and placed in the window. This is done using:
 ```
@@ -267,7 +267,7 @@ def timer(self):
 
 Function round_rectangle is used to make rounded rectangles. Currently it is not being used but it could be used to make objects more visually pleasing.
 
-Function Update_val is the main function that is called. This function updates all the values in the canvas. First of all it checks if "gas" (if(num == 0):) or "brake" (if(num == 1):) is pressed and updates the angle (self.angle) and arrow direction (self.arrow_dir) accordingly. 
+Function Update_val is the main function that is called. This function updates all the values in the canvas. First of all it checks if "gas" (if(num == 0):) or "brake" (if(num == 1):) is pressed and updates the angle value (self.angle) and arrow direction value (self.arrow_dir) accordingly. 
 ```
 if(num == 0):
     if(self.angle != 200):
@@ -280,7 +280,7 @@ if(self.angle > 200 or self.angle <-20 ):
     self.arrow_dir = -self.arrow_dir
 ```
 
-After that is done it it removes all objects that have a chance on changing on the canvas so it is fresh to place updated objects onto it. This is done using the delete_(name) functions toghether with functions that come ready with Tkinter.
+After that is done it it removes all objects that have a chance on changing on the canvas so it has fresh room to place updated objects on. This is done using the self.delete_(name) functions toghether with functions that come ready with Tkinter.
 ```
 self.delete_Poly()                
 self.delete_rect()
@@ -291,7 +291,7 @@ self.MainMidWindow.delete("all")
 self.TempMainMidWindow.delete("all")
 ```
 
-Then it calculates how full the gas/brake bars have to be, takes that value and makes that into a text and updates how full the gas/brake bars have to be.
+It then calculates how full the gas/brake bars have to be, takes that value and makes that into a text and updates how full the gas/brake bars have to be.
 ```
 self.text.append(self.MainMidWindow.create_text(90, 305, text =  '{} {}'.format(int(((220-self.angle-20)/220)*100), "%") , font=("Purisan", 20), fill="snow"))
 self.text.append(self.MainMidWindow.create_text(420, 305, text = '{} {}'.format(int(((self.angle+20)/220)*4000), "rpm"), font=("Purisan", 20), fill="snow")) 
@@ -300,12 +300,12 @@ self.text.append(self.MainMidWindow.create_text(750, 305, text = '{} {}'.format(
 self.rect.append(self.MainMidWindow.create_rectangle(40, 250, 140, 250-((220-self.angle-20)/220)*200, fill='red3'))
 self.rect.append(self.MainMidWindow.create_rectangle(700, 250, 800, 250-((self.angle+20)/220)*200, fill='green2'))  
 ```
-The speed display has to be created. This is done using the clock code that can be found under the header "running tests" shown at the start of the document. In the Update_val function it simple calls the functions tested in the clock code. 
+The speed display has to be created. This is done using the clock code that can be found under the header "running tests" shown at the start of this document. In the Update_val function it calls the functions tested in the clock code. 
 ```
 self.make_speedmeter(self.coord)
 ```
 
-After the speed display has been created, the arrow pointing towards the speed has to be updated and made. This can only be done after the speed display has been made otherwise the arrow will be behind the speed display and cannot be seen anymore. This is done using:
+After the speed display has been created, the arrow pointing towards the speed has to be made and updated. This can only be done after the speed display has been made otherwise the arrow will be behind the speed display and cannot be seen anymore. This is done using:
 
 ```
 self.pol = self.MainMidWindow.create_polygon(
