@@ -198,7 +198,7 @@ Some of the functions found throughout the different files have two funtions tha
 * Main_File_FC
 
 To be able to make a graphical user interface that contains objects, a window has to be made. This is what happens in the main file using Tkinter.
-The main file defines how big the user interface will be, then calls a function from one of the classes and loops this forever.
+The main file defines how big the user interface window will be, then calls a function "display" from one of the classes and loops this forever.
 
 
 * MainMidWindow
