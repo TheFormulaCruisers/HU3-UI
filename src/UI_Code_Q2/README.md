@@ -193,7 +193,7 @@ spi.close()
 
 ## Main code
 
-Some of the functions found throughout the different files have two funtions that do the same with a slightly different name. However on of them takes only "self" as an argument and the other also takes "event" as an argument. This is because they can be activated using a physical button and a button on screen. Physical buttons come with an extra parameter (event). This is why a seperate function has to be made. For example MainMidWindow has start and startB. If any code is unclear, further explanation can always be found in the comments in the file itself.
+Some of the functions found throughout the different files have two funtions that do the same with a slightly different name. However one of them only takes "self" as an argument and the other also takes "event" as an argument. This is because they can be activated using a physical button and a button on screen. Physical buttons come with an extra parameter (event). This is why a seperate function has to be made. For example MainMidWindow has start and startB. If any code is unclear, further explanation can always be found in the comments in the file itself.
 
 * Main_File_FC
 
