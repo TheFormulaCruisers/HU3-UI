@@ -17,7 +17,7 @@ The IDE that was used to test out the written code was Spyder. Information about
 ## Running tests
 
 In the folder Test_code_smaller_parts, four files can be found that each were used to test a different part of the main code.
-To run these files or your own tests, upload the code to the Raspberry Pi using a USB and run the code using an IDE.
+To run these files or your own tests, upload the code to the Raspberry Pi using a USB and run the code from the command prompt or a python shell.
 
 * Saving data onto Excel
 
