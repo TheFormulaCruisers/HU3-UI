@@ -4,7 +4,7 @@ The main program is Main_File_FC. Main_File_FC will create a window that display
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. It also has a detailed explanation of the code used in the files.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
 
@@ -187,7 +187,6 @@ Some of the functions found throughout the different files have two funtions tha
 To be able to make a graphical user interface that contains objects, a window has to be made. This is what happens in the main file using Tkinter.
 The main file defines how big the user interface will be, then calls a function from one of the classes and loops this forever.
 
-Further information can be found in comments in the file itself.
 
 * MainMidWindow
 
@@ -269,7 +268,7 @@ if(self.angle > 200 or self.angle <-20 ):
     self.arrow_dir = -self.arrow_dir
 ```
 
-After this is done it it removes all objects that have a chance on changing on the canvas so it is fresh to place updated objects onto it.
+After that is done it it removes all objects that have a chance on changing on the canvas so it is fresh to place updated objects onto it. This is done using the delete_(name) functions toghether with functions that come ready with Tkinter.
 ```
 self.delete_Poly()                
 self.delete_rect()
@@ -338,14 +337,10 @@ The submit button takes the value that was put into the spinbox and then display
                 self.temperature.set(" Warning "+ str(self.spinTemp) +" C"+degree_sign)
 ```
 
-
-
-
 * BotMidWindow
 
-BotMidWindow contains the software for the bottom half of the screen. This part of the screen is used for testing and preperation.
+BotMidWindow contains the software for the bottom half of the screen. This part of the screen is used for testing and preperation. It also contains the class Layout. This class is used to connnect all other classes and display everything. Class Layout also controls the buttons at the side of the window. The class BotMidWindow currently only shows some tests but no usefull information. This has to be adjusted to sensor values that actually are meaningfull.
 
-Further information can be found in comments in the file itself.
 
 ## Deployment
 
