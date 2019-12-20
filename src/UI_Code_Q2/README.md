@@ -202,7 +202,7 @@ To be able to make a graphical user interface that contains objects, a window ha
 
 * MainMidWindow
 
-MainMidWindow contains the software for the top half of the window. The top half of the screen is used to display the most important information and the most urgent messages. It displays the current speed, the cooling fluid temperature, the time that has passed, how much battery energy is left and the gas/brake paddle positions. A timer is displayed so the driver knows how much time has passed since the race started. This combined with the battery energy level and the temperature level will tell if the driver is asking too much from the car or not.
+MainMidWindow contains the software for the top part of the window. The top part of the screen is used to display the most important information and the most urgent messages. It displays the current speed, the cooling fluid temperature, the time that has passed, how much battery energy is left and the gas/brake paddle positions. A timer is displayed so the driver knows how much time has passed since the race started. This combined with the battery energy level and the temperature level will tell if the driver is asking too much from the car or not.
 
 To place objects in the window, a canvas has to be made and placed in the window. This is done using:
 ```
@@ -300,6 +300,30 @@ self.text.append(self.MainMidWindow.create_text(750, 305, text = '{} {}'.format(
 self.rect.append(self.MainMidWindow.create_rectangle(40, 250, 140, 250-((220-self.angle-20)/220)*200, fill='red3'))
 self.rect.append(self.MainMidWindow.create_rectangle(700, 250, 800, 250-((self.angle+20)/220)*200, fill='green2'))  
 ```
+To display the how full the battery still is, a battery icon has been made in the top left of the screen. The inside color of the battery has four stages. The percentage is constantly updated but the color will be "red" for 0-25% battery, "dark orange" for 25-50%, "gold" for 50-75% and "green3" for 75-100%. Changing the % value shown is done in the first line below and the if statements are for each of the different colors.
+
+```
+        self.battery.set(str(int(spinBattery)) + "%")
+        if(int(spinBattery)>75 and int(spinBattery)<=100):    
+            self.batteryLabel.config(bg = 'green3')
+            self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/248), WindowY/(840/108), radius=10, fill="green3")
+
+        if(int(spinBattery)>50 and int(spinBattery)<=75):
+            self.batteryLabel.config(bg = 'gold')
+            self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/159), WindowY/(840/108), radius=10, fill="gold")
+
+        if(int(spinBattery)>25 and int(spinBattery)<=50):
+            self.batteryLabel.config(bg = 'dark orange')
+            self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/118), WindowY/(840/108), radius=10, fill="dark orange")
+            
+        if(int(spinBattery)>=0) and int(spinBattery)<=25:
+            self.batteryLabel.config(bg = 'red')
+            self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/81), WindowY/(840/108), radius=10, fill="red")
+
+
+```
+
+
 The speed display has to be created. This is done using the clock code that can be found under the header "running tests" shown at the start of this document. In the Update_val function it calls the functions tested in the clock code. 
 ```
 self.make_speedmeter(self.coord)
