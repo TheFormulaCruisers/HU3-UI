@@ -210,9 +210,9 @@ self.MainMidWindow = Canvas(self.window, width= 840, height=420, borderwidth = 0
 self.MainMidWindow.pack_propagate(0)
 ```
 
-Labels are created to display the time and the temperature. With the following code a label is created, setup and placed:
+Labels are created to display the time and the temperature. The parameters used are what window the label is placed into, x offset, variable that will be shown in the label, background and foreground. With the following code a label is created, setup and placed:
 ```
-self.tempLabel = Label(self.MainMidWindow, padx =10 , textvariable=self.temperature, bg = 'black', fg = 'black')
+self.tempLabel = Label(self.MainMidWindow, padx =10, textvariable=self.temperature, bg = 'black', fg = 'black')
 self.tempLabel.config(font=("Courier 20 bold"))
 self.tempLabel.place(x=380,y=340)
 ```
@@ -226,7 +226,7 @@ def start(self,event):
         self.timer()
 ```
 
-After the button check is done, the timer has to be started and updated every second. Self.MainMidWindow.after(960,self.timer). This calls the same function after 960 miliseconds. Depending on how fast or slow your whole program runs, you have to change the 960 part of this last statement to change the time after which it recalls the function.
+After the button check is done, the timer has to be started and updated every second. Self.MainMidWindow.after(960,self.timer). This calls the same function after 960 miliseconds. Depending on how fast or slow your whole program runs, you will have to adjust the 960 miliseconds part of this last statement to change the time after which it recalls the function.
 
 ```
 def timer(self):
@@ -265,9 +265,36 @@ def timer(self):
                 self.MainMidWindow.after(960,self.timer)
 ```
 
-Function round_rectangle is used to make rounded rectangles. Currently it is not being used but it could be used to make objects more visually pleasing.
+Function round_rectangle is used to make rounded rectangles. Currently it is only being used in the battery but it could be used to make  other objects more visually pleasing too.
+```
+    def round_rectangle(self,x1, y1, x2, y2, radius=25, **kwargs):
 
-Function Update_val is the main function that is called. This function updates all the values in the canvas. First of all it checks if "gas" (if(num == 0):) or "brake" (if(num == 1):) is pressed and updates the angle value (self.angle) and arrow direction value (self.arrow_dir) accordingly. 
+        points = [x1+radius, y1,
+                  x1+radius, y1,
+                  x2-radius, y1,
+                  x2-radius, y1,
+                  x2, y1,
+                  x2, y1+radius,
+                  x2, y1+radius,
+                  x2, y2-radius,
+                  x2, y2-radius,
+                  x2, y2,
+                  x2-radius, y2,
+                  x2-radius, y2,
+                  x1+radius, y2,
+                  x1+radius, y2,
+                  x1, y2,
+                  x1, y2-radius,
+                  x1, y2-radius,
+                  x1, y1+radius,
+                  x1, y1+radius,
+                  x1, y1]
+    
+        return self.MainMidWindow.create_polygon(points, **kwargs, smooth=True)
+```
+
+
+Function Update_val is the main function that is called. This function updates all the values in the canvas. First of all it checks if "gas" (if(num == 0):) or "brake" (if(num == 1):) is pressed and updates the angle value (self.angle) and arrow direction value (self.arrow_dir) accordingly. This can be used to simulate data but currently a spinbox is used to put any value you want.
 ```
 if(num == 0):
     if(self.angle != 200):
@@ -280,15 +307,9 @@ if(self.angle > 200 or self.angle <-20 ):
     self.arrow_dir = -self.arrow_dir
 ```
 
-After that is done it it removes all objects that have a chance on changing on the canvas so it has fresh room to place updated objects on. This is done using the self.delete_(name) functions toghether with functions that come ready with Tkinter.
+After that is done it it removes all objects so it has fresh room to place updated objects on.
 ```
-self.delete_Poly()                
-self.delete_rect()
-self.delete_text()
-if(self.line != 0):
-    self.MainMidWindow.delete(self.line)
 self.MainMidWindow.delete("all")    
-self.TempMainMidWindow.delete("all")
 ```
 
 It then calculates how full the gas/brake bars have to be, takes that value and makes that into a text and updates how full the gas/brake bars have to be.
