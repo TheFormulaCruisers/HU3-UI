@@ -3,11 +3,11 @@
 
 ## Getting Started
 
-The main program is Main_File_FC. Main_File_FC will create a window that displays current driving speed, cooling fluid temperature, accelerator pedal position, brake pedal position, steering wheel position and cooling fluid flow speed. Main_File_FC uses the classes MainMidWindow and BotMidWindow from MainMidWindow.py and BotMidWindow.py. The files found in Test_code_smaller_parts are software used to test and understand certain parts in Main_File_FC.
+The main program is Main_File_FC. Main_File_FC will create a window that displays current driving speed, cooling fluid temperature, accelerator pedal position, brake pedal position, steering wheel position and cooling fluid flow speed. Main_File_FC uses the classes MainMidWindow and BotMidWindow from MainMidWindow.py and BotMidWindow.py. The files found in the folder Test_code_smaller_parts are files used to test and understand certain parts in Main_File_FC.
 
 ### Prerequisites
 
-You will need the display made by the formula cruisers, a Raspberry Pi (RPi) and a python integrated development environment (IDE). If you want to test your code without working on the Raspberry Pi, you will have to download an IDE on your computer for example spyder, PyCharm or Atom. Otherwise use the python IDE on the Raspberry Pi.
+You will need the display made by the formula cruisers, a Raspberry Pi (RPi) and a python integrated development environment (IDE). If you want to test your code without working on the Raspberry Pi, you will have to download an IDE onto your computer for example spyder, PyCharm or Atom. Otherwise use the python IDE on the Raspberry Pi.
 
 
 ### Installing
@@ -17,7 +17,7 @@ The IDE that was used to test out the written code was Spyder. Information about
 ## Running tests
 
 In the folder Test_code_smaller_parts, four files can be found that each were used to test a different part of the main code.
-To run these files or your own tests, upload the code to the Raspberry Pi using a USB and run the code from the command prompt or a python shell.
+To run these files or your own tests, upload the code to the Raspberry Pi by copy + paste or by using a USB and run the code from the command prompt or a python shell.
 
 * Saving data onto Excel
 
@@ -193,20 +193,20 @@ spi.close()
 
 ## Main code
 
-Some of the functions found throughout the different files have two funtions that do the same with a slightly different name. However one of them only takes "self" as an argument and the other also takes "event" as an argument. This is because they can be activated using a physical button and a button on screen. Physical buttons come with an extra parameter (event). This is why a seperate function has to be made. For example MainMidWindow has start and startB. If any code is unclear, further explanation can always be found in the comments in the file itself.
+Some of the functions found throughout the different files have two funtions that do the same with a slightly different name. However one of them only takes "self" as an argument and the other also takes "event" as an argument. This is because they can be activated using a physical button and a button on screen. Physical buttons come with an extra parameter (event). This is why a seperate function has been made. For example MainMidWindow has start and startB. If any code is unclear, further explanation can always be found in the comments in the file itself.
 
 * Main_File_FC
 
-To be able to make a graphical user interface that contains objects, a window has to be made. This is what happens in the main file with the use of Tkinter. The main file defines how big the user interface window will be, then calls a function "display" from the class "Layout", which can be found in the file "BotMidWindow", and loops this forever.
+To be able to make a graphical user interface that contains objects, a window has to be made. This is what happens in the main file with the use of Tkinter. The main file defines how big the user interface window will be, then calls a function "display" from the class "Layout", which can be found in the file "BotMidWindow", and loops this till the program is stopped.
 
 
 * MainMidWindow
 
 MainMidWindow contains the software for the top part of the window. The top part of the screen is used to display the most important information and the most urgent messages. It displays the current speed, the cooling fluid temperature, the time that has passed, how much battery energy is left and the gas/brake paddle positions. A timer is displayed so the driver knows how much time has passed since the race started. This combined with the battery energy level and the temperature level will tell if the driver is asking too much from the car or not.
 
-To place objects in the window, a canvas has to be made and placed in the window. This is done using:
+To place objects in the window, a canvas has to be made and placed in the window. This is done using the code below. The canvas function has a lot of different parameters. The first field is the window the canvas is created in, then the size, border and background are defined.  
 ```
-self.MainMidWindow = Canvas(self.window, width= 840, height=420,borderwidth = 0.0, bg='black', highlightthickness=0) 
+self.MainMidWindow = Canvas(self.window, width= 840, height=420, borderwidth = 0.0, highlightthickness=0, bg='black' ) 
 self.MainMidWindow.pack_propagate(0)
 ```
 
