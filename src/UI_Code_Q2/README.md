@@ -391,7 +391,51 @@ Function round_rectangle is used to make rounded rectangles. Currently it is onl
 
 * BotMidWindow
 
-BotMidWindow contains the software for the bottom half of the screen. This part of the screen is used for testing and preperation. It also contains the class Layout. This class is used to connnect all other classes and display everything. Class Layout also controls the buttons at the side of the window. The class BotMidWindow currently only shows some tests but no usefull information. This has to be adjusted to sensor values that actually are meaningfull.
+BotMidWindow contains the software for the bottom half of the screen. This part of the screen is used for testing and preperation. It also contains the class Layout. This class is used to connnect all other classes and display everything. Class Layout also controls the buttons at the side of the window. BotMidWindow mostly has functions that look much like the functions in MainMidWindow. It has one function that is very different and that is funciton_choose. This function selects what to do when a button on the side of the screen is pressed (choice 1-7 for 7 buttons).
+
+```
+def function_choose(self):        
+    self.update_val()
+    self.color_update()
+        
+    if(self.choice != self.old_choice):
+        self.screen_clear()
+        self.old_choice = self.choice
+       
+    if self.BotCanvas == 0:
+        self.screen_clear()
+
+    if(self.choice != self.old_choice):
+        self.screen_clear()
+        self.old_choice = self.choice
+
+    if(self.choice == 1): # or GPIO.input() == GPIO.HIGH):   ##if button 1 (top left) is pressed do functions below
+        self.screen_clear() #empty bottom screen
+        self.rotate_Poly()  #put object onto the screen
+                  
+        elif(self.choice == 2): #if button 2 (mid left) is pressed do functions below
+            self.screen_clear() #empty bottom screen
+            self.rect = self.BotCanvas.create_rectangle(100, 100, 200, 200, fill='red')
+    
+        elif(self.choice == 3): #if button 3 (bottom left) is pressed do functions below
+            self.screen_clear() #empty Bottom screen
+            self.rect = self.BotCanvas.create_rectangle(200, 200, 200 + (self.angle//10)%1000 , 300, fill='blue')
+   
+        elif(self.choice == 4): #if button 4 (top right) is pressed do functions below
+            self.screen_clear() #empty bottom screen
+            self.rect = self.BotCanvas.create_rectangle(300, 300, 400, 400, fill=self.color)
+         
+        elif(self.choice == 5): #if button 5 (top mid left) is pressed do functions below
+            self.screen_clear() #empty bottom screen
+            self.rect = self.BotCanvas.create_rectangle(200, 200, 200 + (self.angle//10)%1000 , 300, fill=self.color)
+
+        elif(self.choice == 6): #if button 6 (bottom mid left) is pressed do functions below
+            self.screen_clear() #empty bottom screen
+            self.temp_gradient()
+
+        elif(self.choice == 7): #if button 7 (bottom right) is pressed do functions below
+            self.screen_clear() #empty bottom screen
+```
 
 
 ## Deployment
