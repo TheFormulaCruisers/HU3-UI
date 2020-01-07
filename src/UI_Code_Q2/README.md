@@ -320,7 +320,7 @@ def start(self,event):
         self.timer()
 ```
 
-After the button check is done, the timer has to be started and updated every second. Self.MainMidWindow.after(960,self.timer). This calls the same function after 960 miliseconds. Depending on how fast or slow your whole program runs, you will have to adjust the 960 miliseconds part of this last statement to change the time after which it recalls the function.
+After the button check is done, the timer has to be started and updated every second. Self.MainMidWindow.after(960,self.timer). This calls the same function after 970 miliseconds. Depending on how fast or slow your whole program runs, you will have to adjust the 960 miliseconds part of this last statement to change the time after which it recalls the function.
 
 ```
 def timer(self):
