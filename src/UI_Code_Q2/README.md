@@ -400,8 +400,8 @@ This code can be copied/downloaded onto your own computer and then run from your
 Testing this code on a Raspberry Pi can be done by copying the code onto a USB and then be putting it onto a Raspberry Pi. Make sure Main_File_FC, MainMidWindow and BotMidWindow are in the same directory, otherwise Main_File_FC cannot use the classes in MainMidWindow and BotMidWindow.
 
 ## Built With
-* [Raspberry Pi](https://www.raspberrypi.org/) - The controller used
-* [Spyder](https://www.spyder-ide.org/) - The IDE used
+* [Raspberry Pi](https://www.raspberrypi.org/) - The used controller
+* [Spyder](https://www.spyder-ide.org/) - The used IDE
 
 ## Contributing
 
