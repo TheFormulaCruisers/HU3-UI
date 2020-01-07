@@ -217,6 +217,100 @@ self.tempLabel.config(font=("Courier 20 bold"))
 self.tempLabel.place(x=380,y=340)
 ```
 
+Function Update_val is the main function that is called. This function updates all the values in the canvas. First of all it checks what the window's width and height are so the whole screen can be scaled.
+```
+WindowY = self.window.winfo_height()
+WindowX = self.window.winfo_width()
+```
+
+After that is done it it removes all objects so it has fresh room to place updated objects on.
+```
+self.MainMidWindow.delete("all")    
+```
+
+It then calculates how full the gas/brake bars have to be, takes that value and makes that into a text and updates how full the gas/brake bars have to be.
+```
+self.text.append(self.MainMidWindow.create_text(WindowX/2, WindowY/1.5, text = '{} {}'.format(int(spinSpeed), "km/h"), font=("Purisan", 20), fill="snow")) 
+self.text.append(self.MainMidWindow.create_text(WindowX/9.33, WindowY/1.5, text =  '{} {}'.format(int(spinBrake), "%") , font=("Purisan", 20), fill="snow"))
+self.text.append(self.MainMidWindow.create_text(WindowX/1.12, WindowY/1.5, text = '{} {}'.format(int(spinGas),"%"), font=("Purisan", 20), fill="snow"))
+
+self.rect.append(self.MainMidWindow.create_rectangle(40, 250, 140, 250-((220-self.angle-20)/220)*200, fill='red3'))
+self.rect.append(self.MainMidWindow.create_rectangle(700, 250, 800, 250-((self.angle+20)/220)*200, fill='green2'))  
+```
+
+To display the how full the battery still is, a battery icon has been made in the top left of the screen. The inside color of the battery has four stages. The percentage is constantly updated but the color will be "red" for 0-25% battery, "dark orange" for 25-50%, "gold" for 50-75% and "green3" for 75-100%. Changing the % value shown is done in the first line below and the if statements are for each of the different colors.
+
+```
+self.my_rectangle = self.round_rectangle(WindowX/(840/35), WindowY/(840/40), WindowX/(840/255), WindowY/(840/115),  radius=20, fill="white")
+self.my_rectangle = self.round_rectangle(WindowX/(840/190), WindowY/(840/52), WindowX/(840/265), WindowY/(840/103), radius=20, fill="white")
+
+self.battery.set(str(int(spinBattery)) + "%")
+if(int(spinBattery)>75 and int(spinBattery)<=100):    
+    self.batteryLabel.config(bg = 'green3')
+    self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/248), WindowY/(840/108),             radius=10, fill="green3")
+
+if(int(spinBattery)>50 and int(spinBattery)<=75):
+    self.batteryLabel.config(bg = 'gold')
+    self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/159), WindowY/(840/108), radius=10, fill="gold")
+
+if(int(spinBattery)>25 and int(spinBattery)<=50):
+    self.batteryLabel.config(bg = 'dark orange')
+    self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/118), WindowY/(840/108), radius=10, fill="dark orange")
+            
+if(int(spinBattery)>=0) and int(spinBattery)<=25:
+    self.batteryLabel.config(bg = 'red')
+    self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/81), WindowY/(840/108), radius=10, fill="red")
+
+```
+
+The speed display has to be created. This is done using the clock code that can be found under the header "running tests" shown at the start of this document. In the Update_val function it calls the functions tested in the clock code. 
+```
+self.speedMeter = self.make_speedmeter([WindowX/(840/200), WindowY/(840/190), WindowX/(840/650), WindowY/(840/650)])    
+
+```
+
+After the speed display has been created, the arrow pointing towards the speed has to be made and updated. This can only be done after the speed display has been made otherwise the arrow will be behind the speed display and cannot be seen anymore. This is done using:
+
+```
+self.pol = self.MainMidWindow.create_polygon(
+    [      [ self.centerx + self.L_E  * self.size * math.cos(math.radians(self.angle))  *0 ,  self.centery + self.L_E * self.size * math.sin(math.radians(self.angle)) *0 + 25 ], #bottom put to 0 to make it an arrow
+           [ self.centerx + self.L_S  * self.size * math.cos(math.radians(self.angle + 90)) , self.centery + self.L_S * self.size*  math.sin(math.radians(self.angle + 90)) + 25 ],
+           [ self.centerx + self.L_W  * self.size * math.cos(math.radians(self.angle + 180)), self.centery + self.L_W * self.size * math.sin(math.radians(self.angle + 180)) + 25 ] ,  
+           [ self.centerx + self.L_N *  self.size * math.cos(math.radians(self.angle + 270)), self.centery + self.L_N  * self.size * math.sin(math.radians(self.angle + 270)) + 25 ]
+    ] , fill='red'        ) 
+```
+
+The lenth and width of the arrow is determined in the initialisation of the class "def init(self, window)" with: 
+
+```
+self.L_N = 0.1
+self.L_E = 3
+self.L_S = 0.1
+self.L_W = 2.5
+```
+
+To simulate sensordata multiple spinboxes with variables to store the number in have been made. Also a submit button is needed to use the filled in number. This can be done with:
+```
+        self.spinBreak = StringVar()
+        self.spinBox = Spinbox(self.MainMidWindow, from_=0, to=180, width = 5, bg = 'snow')
+        self.spinBox.place(x=150,y=200)
+        
+        self.sensorButton = Button(self.MainMidWindow, text = 'Load', command = self.useSensorData, bg = 'snow', height = 1)
+        self.sensorButton.place(x=220, y=100)
+```
+The submit button for the temperature takes the value that was put into the spinbox and then displays that number and a color (blue to white to red) to show if that temperature is fine or is too hot. This is done with the function Update_temp. The value from Update_temp is then used int he Update_val function and looks like this:
+```
+if (float(self.spinTemp) < 90): 
+    self.temperature.set(str(spinTemp) + " C" + degree_sign)
+    self.tempLabel.config(font=("Courier 30 bold"),bg='#%02x%02x%02x' % (75+int(round(self.spinTemp*2)), 75+int(round(self.spinTemp*2)), 255))
+    self.tempLabel.place(relx=0.43,rely=0.7)
+
+else:
+    self.tempLabel.config(font=("Courier 30 bold"),bg='#%02x%02x%02x' % (255, 255+180-int(round(self.spinTemp)*2), 255+180-int(round(self.spinTemp)*2)))
+    self.tempLabel.place(relx=0.2, rely=0.7)
+    self.temperature.set(" Warning"+ str(self.spinTemp) +" C"+degree_sign)
+```
+
 To check if the button that starts the timer has already been pressed before, a start function has been made. 
 ```
 def start(self,event):
@@ -294,105 +388,6 @@ Function round_rectangle is used to make rounded rectangles. Currently it is onl
 ```
 
 
-Function Update_val is the main function that is called. This function updates all the values in the canvas. First of all it checks if "gas" (if(num == 0):) or "brake" (if(num == 1):) is pressed and updates the angle value (self.angle) and arrow direction value (self.arrow_dir) accordingly. This can be used to simulate data but currently a spinbox is used to put any value you want.
-```
-if(num == 0):
-    if(self.angle != 200):
-        self.angle += self.arrow_dir # .. was 1 (too small to see something)
-if(num == 1):
-    if(self.angle != -20):
-        self.angle -= self.arrow_dir # .. was 1 (too small to see something)
-
-if(self.angle > 200 or self.angle <-20 ):
-    self.arrow_dir = -self.arrow_dir
-```
-
-After that is done it it removes all objects so it has fresh room to place updated objects on.
-```
-self.MainMidWindow.delete("all")    
-```
-
-It then calculates how full the gas/brake bars have to be, takes that value and makes that into a text and updates how full the gas/brake bars have to be.
-```
-self.text.append(self.MainMidWindow.create_text(90, 305, text =  '{} {}'.format(int(((220-self.angle-20)/220)*100), "%") , font=("Purisan", 20), fill="snow"))
-self.text.append(self.MainMidWindow.create_text(420, 305, text = '{} {}'.format(int(((self.angle+20)/220)*4000), "rpm"), font=("Purisan", 20), fill="snow")) 
-self.text.append(self.MainMidWindow.create_text(750, 305, text = '{} {}'.format(int(((self.angle+20)/220)*100),"%"), font=("Purisan", 20), fill="snow"))
-
-self.rect.append(self.MainMidWindow.create_rectangle(40, 250, 140, 250-((220-self.angle-20)/220)*200, fill='red3'))
-self.rect.append(self.MainMidWindow.create_rectangle(700, 250, 800, 250-((self.angle+20)/220)*200, fill='green2'))  
-```
-To display the how full the battery still is, a battery icon has been made in the top left of the screen. The inside color of the battery has four stages. The percentage is constantly updated but the color will be "red" for 0-25% battery, "dark orange" for 25-50%, "gold" for 50-75% and "green3" for 75-100%. Changing the % value shown is done in the first line below and the if statements are for each of the different colors.
-
-```
-        self.battery.set(str(int(spinBattery)) + "%")
-        if(int(spinBattery)>75 and int(spinBattery)<=100):    
-            self.batteryLabel.config(bg = 'green3')
-            self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/248), WindowY/(840/108), radius=10, fill="green3")
-
-        if(int(spinBattery)>50 and int(spinBattery)<=75):
-            self.batteryLabel.config(bg = 'gold')
-            self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/159), WindowY/(840/108), radius=10, fill="gold")
-
-        if(int(spinBattery)>25 and int(spinBattery)<=50):
-            self.batteryLabel.config(bg = 'dark orange')
-            self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/118), WindowY/(840/108), radius=10, fill="dark orange")
-            
-        if(int(spinBattery)>=0) and int(spinBattery)<=25:
-            self.batteryLabel.config(bg = 'red')
-            self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/81), WindowY/(840/108), radius=10, fill="red")
-
-
-```
-
-
-The speed display has to be created. This is done using the clock code that can be found under the header "running tests" shown at the start of this document. In the Update_val function it calls the functions tested in the clock code. 
-```
-self.make_speedmeter(self.coord)
-```
-
-After the speed display has been created, the arrow pointing towards the speed has to be made and updated. This can only be done after the speed display has been made otherwise the arrow will be behind the speed display and cannot be seen anymore. This is done using:
-
-```
-self.pol = self.MainMidWindow.create_polygon(
-    [      [ self.centerx + self.L_E  * self.size * math.cos(math.radians(self.angle))  *0 ,  self.centery + self.L_E * self.size * math.sin(math.radians(self.angle)) *0 + 25 ], #bottom put to 0 to make it an arrow
-           [ self.centerx + self.L_S  * self.size * math.cos(math.radians(self.angle + 90)) , self.centery + self.L_S * self.size*  math.sin(math.radians(self.angle + 90)) + 25 ],
-           [ self.centerx + self.L_W  * self.size * math.cos(math.radians(self.angle + 180)), self.centery + self.L_W * self.size * math.sin(math.radians(self.angle + 180)) + 25 ] ,  
-           [ self.centerx + self.L_N *  self.size * math.cos(math.radians(self.angle + 270)), self.centery + self.L_N  * self.size * math.sin(math.radians(self.angle + 270)) + 25 ]
-    ] , fill='red'        ) 
-```
-
-The lenth and width of the arrow is determined in the initialisation of the class (def init(self, window)) with: 
-
-```
-self.L_N = 0.1
-self.L_E = 3
-self.L_S = 0.1
-self.L_W = 2.5
-```
-
-To simulate sensordata multiple spinboxes with variables to store the number in have been made. Also a submit button is needed to use the filled in number. This can be done with:
-```
-        self.spinBreak = StringVar()
-        self.spinBox = Spinbox(self.MainMidWindow, from_=0, to=180, width = 5, bg = 'snow')
-        self.spinBox.place(x=150,y=200)
-        
-        self.sensorButton = Button(self.MainMidWindow, text = 'Load', command = self.useSensorData, bg = 'snow', height = 1)
-        self.sensorButton.place(x=220, y=100)
-```
-The submit button takes the value that was put into the spinbox and then displays that number and a color to show if that temperature is fine or is too hot. This is done in the function useSensorData and looks like this:
-```
-        def useSensorData(self):
-            self.spinTemp = float(self.spinBox.get())
-            if (float(self.spinTemp) < 90): 
-                self.temperature.set(str(self.spinBox.get())+" C"+degree_sign)
-                self.tempLabel.config(font=("Courier 30 bold"),bg='#%02x%02x%02x' % (75+int(round(self.spinTemp*2)), 75+int(round(self.spinTemp*2)), 255))
-                self.tempLabel.place(x=380,y=340)
-
-            else:
-                self.tempLabel.config(font=("Courier 30 bold"),bg='#%02x%02x%02x' % (255, 255+180-int(round(self.spinTemp)*2), 255+180-int(round(self.spinTemp)*2)))
-                self.tempLabel.place(x=210,y=340)
-                self.temperature.set(" Warning "+ str(self.spinTemp) +" C"+degree_sign)
-```
 
 * BotMidWindow
 
