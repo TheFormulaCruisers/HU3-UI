@@ -410,8 +410,12 @@ Testing this code on a Raspberry Pi can be done by copying the code onto a USB a
 
 ## Contributing
 
-If any changes need to be made, please first make a copy and change what needs to be changed in there (fork the document/folder).
-Please read [CONTRIBUTING.md](https://github.com/KevinEwoudLee/HU3-UI/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+If any changes need to be made, please first make a copy and then change what needs to be changed in there (fork the document/folder).
+Please read [CONTRIBUTING.md](https://github.com/KevinEwoudLee/HU3-UI/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests.
+
+## Possible changes for next versions
+
+Currently all objects on the screen are removed. To increase the frames per second only the changing objects on the screen have to be removed or replaced. For nicer looks the temperature box can be changed. This can be done by removing the label and placing an object and then showing text in front of the object.
 
 
 ## Authors
