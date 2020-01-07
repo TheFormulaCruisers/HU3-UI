@@ -29,10 +29,10 @@ import MainMidWindow as mw
 
 #==============================================Global Variables==============================
 global WindowX            
-windowX = 1200
+WindowX = 1200
 
 global WindowY
-windowY = 840  
+WindowY = 840  
 
 global FormulaOrange1
 FormulaOrange1 =  '#ee6d24'
@@ -48,6 +48,11 @@ count =0
 
 global countcheck
 countcheck = 0
+
+global spinBrake
+spinBrake = 0
+global spinGas
+spinGas = 0
 
 global degree_sign
 degree_sign= u'\N{DEGREE SIGN}' 
@@ -91,31 +96,56 @@ class BotMidWindow:
         self.text_temp = 0  
         
         #Make a canvas in the bottom half of the screen to place other objects inside of and give it the name BotCanvas.
-        self.BotCanvas = Canvas(self.window, width= 840, height=420,borderwidth = 0.0, bg='black', highlightthickness=0)
+        self.BotCanvas = Canvas(self.window, width= 840, height=170,borderwidth = 0.0, bg='black', highlightthickness=0)
         self.BotCanvas.pack() #place the created canvas into the window.
         
         #Sensor simulator
+        #Load button + spinbox
         self.spin = StringVar()
         self.spinBox = Spinbox(self.BotCanvas, from_=0, to=100, width = 5, bg = 'snow')
-        self.spinBox.place(x=50,y=100)
+        self.spinBox.place(relx=0.05,rely=0.5)
         
         #Make a button for inputting "sensordata"
         #Make a button named "Load" in the Canvas named "Botcanvas", with background color "snow" and execute the function useSensor. 
         self.sensorButton = Button(self.BotCanvas, text = 'Load', command = self.useSensor, bg = 'snow', height = 1) 
-        self.sensorButton.place(x=50, y=150) # Place the button 50 pixels to the right and 150 pixels down (top left is 0,0).
+        self.sensorButton.place(relx=0.12, rely=0.5) # Place the button 50 pixels to the right and 150 pixels down (top left is 0,0).
         
         #Make a label (a box to place text in).
         #Place the label in BotCanvas, with 10 pixels of empty room to the left and right of the text. Position it at coordinates (360,340) and give it font Courier with size 20 and make it bold.
         self.sensorData = Label(self.BotCanvas, padx =10 , textvariable=self.spin, bg = 'black', fg = 'white')
         self.sensorData.config(font=("Courier 20 bold"))
-        self.sensorData.place(x=360,y=340)
+        self.sensorData.place(relx= 0.5, rely=0.1)
+        
+        #Brake pedal position
+        self.spinBrake = StringVar()
+        self.spinBoxBrake = Spinbox(self.BotCanvas, from_=0, to=120, width = 5, bg = 'snow')
+        self.spinBoxBrake.place(relx=0.05, rely=0.1)
+        
+        self.sensorButtonBrake = Button(self.BotCanvas, text = 'Brake', command = self.Update_brake, bg = 'snow', height = 1)
+        self.sensorButtonBrake.place(relx=0.12, rely=0.1)
+        
+        #Gas pedal position
+        self.spinGas = StringVar()
+        self.spinBoxGas = Spinbox(self.BotCanvas, from_=0, to=180, width = 5, bg = 'snow')
+        self.spinBoxGas.place(relx=0.05, rely=0.3)
+        
+        self.sensorButtonGas = Button(self.BotCanvas, text = 'Gas', command = self.Update_gas, bg = 'snow', height = 1)
+        self.sensorButtonGas.place(relx=0.12, rely=0.3)
 
         
         
     #Function useSensor is used to update the value of self.spin to what is currently the value in the spinbox.
     def useSensor(self):
         self.spin.set(str(self.spinBox.get()))
+    
+    def Update_brake(self):
+        global spinBrake #To alter the value of the global variable it has to be specified you are using the global variable first
+        spinBrake = float(self.spinBoxBrake.get())
         
+    def Update_gas(self):
+        global spinGas #To alter the value of the global variable it has to be specified you are using the global variable first
+        spinGas = float(self.spinBoxGas.get())
+    
     #Animated Polygon, Animated Polygon currently not updating        
     def delete_Poly(self):
 #        mydebug(f"WinMid.delete_Poly() self.index={self.index}")
@@ -252,6 +282,22 @@ class BotMidWindow:
         
         
     def update_val(self):
+        WindowX = self.window.winfo_height()
+        WindowX = self.window.winfo_width()
+
+        self.BotCanvas.delete("all")
+        
+        self.BotCanvas.create_text(WindowX/4, WindowY/28, text =  '{} {}'.format(int(spinBrake), "%") , font=("Purisan", 20), fill="snow")
+        self.BotCanvas.create_text(WindowX/4, WindowY/14, text = '{} {}'.format(int(spinGas), "%"), font=("Purisan", 20), fill="snow") 
+#        #Make text under gas meter(green bar)
+#        self.text.append(self.MainMidWindow.create_text(WindowX/1.12, WindowY/1.5, text = '{} {}'.format(int(spinGas),"%"), font=("Purisan", 20), fill="snow"))
+        self.BotCanvas.create_rectangle(WindowX/3, WindowY/42, WindowX/3+spinBrake, WindowY/21, fill='red3')
+#       self.my_rectangle = self.round_rectangle(40, 250-((220-self.angle-20)/220)*200, 140, 250 , radius=20, fill="red3")
+        self.BotCanvas.create_rectangle(WindowX/3, WindowY/16.8, WindowX/3+spinGas, WindowY/12, fill='green2')
+
+#        self.rect.append(self.MainMidWindow.create_rectangle(WindowX/(840/720), WindowY/(840/(275*1.83)), WindowX/(840/780), WindowY/(840/((275-(spinGas))*1.83)), fill='green2'))
+
+    
         self.angle += 1
         self.color_update()
     
@@ -320,17 +366,11 @@ class Layout(Frame, BotMidWindow):
         self.right2_button.place(relx = 1- self.width_split, rely = self.height_split*0.75, relwidth = self.width_split, relheight = self.height_split*0.75)
         self.right3_button.place(relx = 1-self.width_split, rely = 2* self.height_split*0.75, relwidth = self.width_split, relheight = self.height_split*0.75)   
         self.right4_button.place(relx = 1-self.width_split, rely = 2.25* self.height_split, relwidth = self.width_split, relheight = self.height_split*0.75)   
+        #Placement botmidwindow and mainmidwindow
         self.mid1.place( relx = self.width_split, rely = 0,     relheight  =1., relwidth= 1 - 2*self.width_split)
-        self.mid2.place( relx = self.width_split, rely = 0.5,   relheight =0.5,  relwidth= 1 -  2*self.width_split)
+        self.mid2.place( relx = self.width_split, rely = 0.8,   relheight =0.2,  relwidth= 1 -  2*self.width_split)
         #Update the screen
         self.screen_Updater()
-
-        
-#    def split_val(self, split_val):
-#        self.old_relx = relx
-#        self.old_rely = rely
-#        self.old_height = relheight
-#        self.old_relwidth = relwidth
 
 
     #Call function to execute the object for the second window screen    
@@ -344,7 +384,7 @@ class Layout(Frame, BotMidWindow):
         self.BotMidWindow.function_choose()
         self.MainMidWindow.Update_val(3) #Make sure gas and brake simulation is not affected.
 #        print(int(time.time()*1000 - self.time_mark))
-        self.time_mark = time.time()*1000
+#        self.time_mark = time.time()*1000
         self.master.after(10, self.screen_Updater)
 
     #Function to simulate gas is being pressed
