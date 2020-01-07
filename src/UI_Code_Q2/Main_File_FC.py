@@ -99,7 +99,7 @@ windowY = 840
 
 
 
-winsize = str(windowX) + 'x' + str(windowY) #Make a variable named "winsize" with the x and y size as a string.
+winsize = str(windowX) + 'x' + str(windowY) + '+-10+0'  #Make a variable named "winsize" with the x and y size as a string.
 global master #Make the variable master a global variable
 master = Tk() #Make a Tkinter window and call it "master"
 
