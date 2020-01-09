@@ -465,7 +465,7 @@ Currently all objects on the screen are removed. To increase the frames per seco
 ## Usefull links
 
 In addition to the comments in the software code itself here are some and useful videos and web tutorials:
-Tkinter was used to make the GUI. Information about Tkinter: 
+* Tkinter was used to make the GUI. Information about Tkinter: 
 
 https://core-electronics.com.au/tutorials/raspberry-pi-workshop-for-beginners.html#ch5
 
@@ -473,15 +473,15 @@ https://effbot.org/tkinterbook/pack.htm
 
 https://codereview.stackexchange.com/questions/191477/binding-a-keyboard-key-to-a-tkinter-button
 
-For saving information in Excel: 
+* For saving information in Excel: 
 
 https://www.youtube.com/watch?v=w36yng8BTUU
 
-Writing data to USB:
+ * Writing data to USB:
 
 http://cms.digi.com/resources/documentation/digidocs/90001537/references/r_how_to_use_usb_flash_drive.htm?TocPath=Digi%20Hardware%20Access%7C_____14
 
-SPI communication:
+* SPI communication:
 
 https://learn.sparkfun.com/tutorials/raspberry-pi-spi-and-i2c-tutorial/all
 
