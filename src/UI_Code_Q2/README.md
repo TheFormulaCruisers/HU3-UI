@@ -197,8 +197,54 @@ Some of the functions found throughout the different files have two funtions tha
 
 * Main_File_FC
 
-To be able to make a graphical user interface that contains objects, a window has to be made. This is what happens in the main file with the use of Tkinter. The main file defines how big the user interface window will be, then calls a function "display" from the class "Layout", which can be found in the file "BotMidWindow", and loops this till the program is stopped.
+First of all, a SPI connection is made and a connection to a specific bus and device is defined.
+```
+bus = 0
+device = 1
+spi = spidev.SpiDev()
 
+spi.open(bus, device)
+
+```
+Then the mode and clockspeed are set.
+```
+spi.max_speed_hz = 250000
+spi.mode = 0
+
+```
+To send and receive data one line of code is used. The received variable(s) are stored in "result" and the transvered variable towards the C3 microcontroller is "msg". The function to send and receive is spi.xfer2. For different functions "spidev opions" can be looked up online  .
+```
+result = spi.xfer2(msg)
+
+```
+As soon as the data has been collected from the C3, it is then stored onto a USB. The data is stored into a .csv file so all different sensor data can easily be distinguished from each other by commas. First, the file where the data has to be stored in has to be opened. After this is done, the file is checked if it is empty or not. If it is empty it will fill the first row with the text after file.write. Each word that is after a comma is put into a seperate column. Once this has been completed, the current time is put into the variable "now". The time wil always be put into the first column and then the sensor data will be put behind it. This is so strange sensor values can more easily be coupled to the place where it happened.
+```
+file = open("E:/test2.csv", "a")
+if os.stat("E:/test2.csv").st_size == 0:
+        file.write("Time,Sensor1,Sensor2,Sensor3,Sensor4,Sensor5\n")
+now = datetime.now()
+file.write(str(now)+","+str(i)+","+str(-i)+","+str(i-10)+","+str(i+5)+","+str(i*i)+"\n")
+file.flush()
+file.close()  
+##
+```
+
+To be able to make a graphical user interface that contains objects, a window has to be made. This is what happens in the main file with the use of Tkinter. 
+```
+master = Tk()
+
+```
+
+The main file defines how big the user interface window will be
+```
+winsize = str(windowX) + 'x' + str(windowY) + '+-10+0'
+
+master.geometry(winsize)
+```
+It then calls a function "display" from the class "Layout", which can be found in the file "BotMidWindow", and loops this till the program is stopped. This function activates everything within BotMidWindow and MainMidWindow.
+```
+Lay = bw.Layout(result, master) #Lay becomes an object of the class "Layout" from the document "BotMidWindow.py"
+```
 
 * MainMidWindow
 
