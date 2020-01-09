@@ -463,7 +463,9 @@ Currently all objects on the screen are removed. To increase the frames per seco
 * **Kevin Lee** - Version 2 developer (Q2) - [Kevin_Lee](https://betafactory.atlassian.net/wiki/spaces/~959975090/overview)
 
 ## Usefull links
-* Tkinter was used to make the GUI. Information about Tkinter: 
+
+In addition to the comments in the software code itself here are some and useful videos and web tutorials:
+Tkinter was used to make the GUI. Information about Tkinter: 
 
 https://core-electronics.com.au/tutorials/raspberry-pi-workshop-for-beginners.html#ch5
 
