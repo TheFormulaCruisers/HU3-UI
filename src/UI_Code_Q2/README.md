@@ -180,7 +180,7 @@ spi = spidev.SpiDev()
 
 spi.open(bus, device)
 
-spi.max_speed_hz = 500000
+spi.max_speed_hz = 250000
 spi.mode = 0
 
 msg = 2
