@@ -212,7 +212,7 @@ spi.max_speed_hz = 250000
 spi.mode = 0
 
 ```
-To send and receive data one line of code is used. The received variable(s) are stored in "result" and the transvered variable towards the C3 microcontroller is "msg". The function to send and receive is spi.xfer2. For different functions "spidev opions" can be looked up ([online])(http://tightdev.net/SpiDev_Doc.pdf).
+To send and receive data one line of code is used. The received variable(s) are stored in "result" and the transvered variable towards the C3 microcontroller is "msg". The function to send and receive is spi.xfer2. For different functions "spidev opions" can be looked up [(online)](http://tightdev.net/SpiDev_Doc.pdf).
 ```
 result = spi.xfer2(msg)
 
