@@ -7,7 +7,7 @@ The main program is Main_File_FC. Main_File_FC will create a window that display
 
 ### Prerequisites
 
-You will need the display made by the formula cruisers, a Raspberry Pi (RPi) and a python integrated development environment (IDE). If you want to test your code without working on the Raspberry Pi, you will have to download an IDE onto your computer for example spyder, PyCharm or Atom. Otherwise use the python IDE on the Raspberry Pi.
+You will need the display made by the formula cruisers, a Raspberry Pi (RPi) and a Python Integrated Development Environment (IDE). If you want to test your code without working on the Raspberry Pi, you will have to download an IDE onto your computer for example spyder, PyCharm or Atom. Otherwise use the python IDE on the Raspberry Pi.
 
 
 ### Installing
@@ -57,7 +57,7 @@ mainloop()
 
 * Saving data onto USB
 
-The file PythonWriteUSB shows a small example of saving data into an excel file on a USB. The excel file has to already exist and should be saved as a ".csv" (comma-seperated values) file. The code below will save data into 6 columns and the number of rows will be equal to the data that was already in the file with an adition of ten rows. The first column will have the title "time" and the others have "sensor (1-5)".
+The file PythonWriteUSB shows a small example of saving data into a file on a USB. The file has to already exist and should be saved as a ".csv" (comma-seperated values) file. The code below will save data into 6 columns and the number of rows will be equal to the data that was already in the file with an adition of ten rows. The first column will have the title "time" and the others have "sensor (1-5)".
 
 ```
 import os
@@ -166,7 +166,7 @@ root.mainloop()
 
 * SPI communication with C3
 
-The file SPI communication FC is adjusted code from this [SPI tutorial](https://learn.sparkfun.com/tutorials/raspberry-pi-spi-and-i2c-tutorial/all). This code will send information to the C3 and then it will ask for a return message. The sent message is "msg" and the returned value is stored in "result". More information can be found by clicking on the link.
+The file SPI communication FC is adjusted code from this [SPI tutorial](https://learn.sparkfun.com/tutorials/raspberry-pi-spi-and-i2c-tutorial/all). This code will send information to the C3 and then it will ask for a return message. The sent message is "msg" and the returned value is stored in "result".
 
 ```
 import time
@@ -193,7 +193,7 @@ spi.close()
 
 ## Main code
 
-Some of the functions found throughout the different files have two funtions that do the same with a slightly different name. However one of them only takes "self" as an argument and the other also takes "event" as an argument. This is because they can be activated using a physical button and a button on screen. Physical buttons come with an extra parameter (event). This is why a seperate function has been made. For example MainMidWindow has start and startB. If any code is unclear, further explanation can always be found in the comments in the file itself.
+Some of the functions found throughout the different files have two funtions that do the same with a slightly different name. However one of them only takes "self" as an argument and the other also takes "event" as an argument. This is because they can be activated using a physical button and a button on screen. Physical buttons come with an extra parameter (event). This is why for tsting purposes a seperate function has been made. For example MainMidWindow has start and startB. If any code is unclear, further explanation can usually be found in the comments in the file itself.
 
 * Main_File_FC
 
@@ -217,7 +217,7 @@ To send and receive data one line of code is used. The received variable(s) are 
 result = spi.xfer2(msg)
 
 ```
-As soon as the data has been collected from the C3, it is then stored onto a USB. The data is stored into a .csv file so all different sensor data can easily be distinguished from each other by commas. First, the file where the data has to be stored in has to be opened. After this is done, the file is checked if it is empty or not. If it is empty it will fill the first row with the text after file.write. Each word that is after a comma is put into a seperate column. Once this has been completed, the current time is put into the variable "now". The time wil always be put into the first column and then the sensor data will be put behind it. This is so strange sensor values can more easily be coupled to the place where it happened.
+As soon as the data has been collected from the C3, it is then stored onto a USB. The data is stored into a .csv file so all different sensor data can easily be distinguished from each other by commas. First, the file that will contain the data, has to be opened. After this is done, the file is checked if it is empty or not. If it is empty it will fill the first row with the text in the brackets of "file.write". Each word that is after a comma is put into a seperate column. Once this has been completed, the current time is put into the variable "now". The time wil always be put into the first column and then the sensor data will be put behind it. This is so strange sensor values can more easily be coupled to where and when it happened.
 ```
 file = open("E:/test2.csv", "a")
 if os.stat("E:/test2.csv").st_size == 0:
@@ -235,7 +235,7 @@ master = Tk()
 
 ```
 
-The main file defines how big the user interface window will be
+The main file defines how big the user interface window will be.
 ```
 winsize = str(windowX) + 'x' + str(windowY) + '+-10+0'
 
