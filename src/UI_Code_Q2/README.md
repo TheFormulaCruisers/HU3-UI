@@ -241,15 +241,19 @@ winsize = str(windowX) + 'x' + str(windowY) + '+-10+0'
 
 master.geometry(winsize)
 ```
-It then calls a function "display" from the class "Layout", which can be found in the file "BotMidWindow", and loops this till the program is stopped. This function activates everything within BotMidWindow and MainMidWindow.
+It then calls a function "display" from the class "Layout" after 100 miliseconds and loops this till the main window is closed. This function activates everything within BotMidWindow and MainMidWindow. With the function .after, a function is called after a certain amount of miliseconds. 
+
 ```
 Lay = bw.Layout(result, master) #Lay becomes an object of the class "Layout" from the document "BotMidWindow.py"
+master.after(100, Lay.display) #Call the function "display" from class "Layout" after 100 miliseconds
+master.mainloop() #Loop forever
 ```
 
 * MainMidWindow
 
 MainMidWindow contains the software for the top part of the window. The top part of the screen is used to display the most important information and the most urgent messages. It displays the current speed, the cooling fluid temperature, the time that has passed, how much battery energy is left and the gas/brake paddle positions. A timer is displayed so the driver knows how much time has passed since the race started. This combined with the battery energy level and the temperature level will tell if the driver is asking too much from the car or not.
 
+In "def __init__" all the variables are defined and the buttons, labels and boxes are created.
 To place objects in the window, a canvas has to be made and placed in the window. This is done using the code below. The canvas function has a lot of different parameters. The first field is the window the canvas is created in, then the size, border and background are defined.  
 ```
 self.MainMidWindow = Canvas(self.window, width= 840, height=420, borderwidth = 0.0, highlightthickness=0, bg='black' ) 
@@ -263,7 +267,7 @@ self.tempLabel.config(font=("Courier 20 bold"))
 self.tempLabel.place(x=380,y=340)
 ```
 
-Function Update_val is the main function that is called. This function updates all the values in the canvas. First of all it checks what the window's width and height are so the whole screen can be scaled.
+Function Update_val is the main function that is called. This function updates all the values in the canvas. First of all it checks what the window's width and height are so the whole screen can be scaled if needed.
 ```
 WindowY = self.window.winfo_height()
 WindowX = self.window.winfo_width()
@@ -274,14 +278,9 @@ After that is done it it removes all objects so it has fresh room to place updat
 self.MainMidWindow.delete("all")    
 ```
 
-It then calculates how full the gas/brake bars have to be, takes that value and makes that into a text and updates how full the gas/brake bars have to be.
+It then places a text under the speed meter to display how fast the car is going.
 ```
-self.text.append(self.MainMidWindow.create_text(WindowX/2, WindowY/1.5, text = '{} {}'.format(int(spinSpeed), "km/h"), font=("Purisan", 20), fill="snow")) 
-self.text.append(self.MainMidWindow.create_text(WindowX/9.33, WindowY/1.5, text =  '{} {}'.format(int(spinBrake), "%") , font=("Purisan", 20), fill="snow"))
-self.text.append(self.MainMidWindow.create_text(WindowX/1.12, WindowY/1.5, text = '{} {}'.format(int(spinGas),"%"), font=("Purisan", 20), fill="snow"))
-
-self.rect.append(self.MainMidWindow.create_rectangle(40, 250, 140, 250-((220-self.angle-20)/220)*200, fill='red3'))
-self.rect.append(self.MainMidWindow.create_rectangle(700, 250, 800, 250-((self.angle+20)/220)*200, fill='green2'))  
+self.text.append(self.MainMidWindow.create_text(WindowX/9.33, WindowY/1.5, text =  '{} {}'.format(int(result[3]), "km/h") , font=("Purisan", 20), fill="snow"))
 ```
 
 To display the how full the battery still is, a battery icon has been made in the top left of the screen. The inside color of the battery has four stages. The percentage is constantly updated but the color will be "red" for 0-25% battery, "dark orange" for 25-50%, "gold" for 50-75% and "green3" for 75-100%. Changing the % value shown is done in the first line below and the if statements are for each of the different colors.
@@ -290,20 +289,20 @@ To display the how full the battery still is, a battery icon has been made in th
 self.my_rectangle = self.round_rectangle(WindowX/(840/35), WindowY/(840/40), WindowX/(840/255), WindowY/(840/115),  radius=20, fill="white")
 self.my_rectangle = self.round_rectangle(WindowX/(840/190), WindowY/(840/52), WindowX/(840/265), WindowY/(840/103), radius=20, fill="white")
 
-self.battery.set(str(int(spinBattery)) + "%")
-if(int(spinBattery)>75 and int(spinBattery)<=100):    
+self.battery.set(str(int(self.result[2])) + "%")
+if(int(spinBattery)>75 and int(self.result[2])<=100):    
     self.batteryLabel.config(bg = 'green3')
     self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/248), WindowY/(840/108),             radius=10, fill="green3")
 
-if(int(spinBattery)>50 and int(spinBattery)<=75):
+if(int(self.result[2])>50 and int(self.result[2])<=75):
     self.batteryLabel.config(bg = 'gold')
     self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/159), WindowY/(840/108), radius=10, fill="gold")
 
-if(int(spinBattery)>25 and int(spinBattery)<=50):
+if(int(self.result[2])>25 and int(self.result[2])<=50):
     self.batteryLabel.config(bg = 'dark orange')
     self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/118), WindowY/(840/108), radius=10, fill="dark orange")
             
-if(int(spinBattery)>=0) and int(spinBattery)<=25:
+if(int(self.result[2])>=0) and int(self.result[2])<=25:
     self.batteryLabel.config(bg = 'red')
     self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/81), WindowY/(840/108), radius=10, fill="red")
 
@@ -319,20 +318,19 @@ After the speed display has been created, the arrow pointing towards the speed h
 
 ```
 self.pol = self.MainMidWindow.create_polygon(
-    [      [ self.centerx + self.L_E  * self.size * math.cos(math.radians(self.angle))  *0 ,  self.centery + self.L_E * self.size * math.sin(math.radians(self.angle)) *0 + 25 ], #bottom put to 0 to make it an arrow
-           [ self.centerx + self.L_S  * self.size * math.cos(math.radians(self.angle + 90)) , self.centery + self.L_S * self.size*  math.sin(math.radians(self.angle + 90)) + 25 ],
-           [ self.centerx + self.L_W  * self.size * math.cos(math.radians(self.angle + 180)), self.centery + self.L_W * self.size * math.sin(math.radians(self.angle + 180)) + 25 ] ,  
-           [ self.centerx + self.L_N *  self.size * math.cos(math.radians(self.angle + 270)), self.centery + self.L_N  * self.size * math.sin(math.radians(self.angle + 270)) + 25 ]
-    ] , fill='red'        ) 
+            [      [ WindowX/2 + self.L_S  * self.size * math.cos(math.radians(self.result[3]*2.083 + 55)) , WindowY/4 + self.L_S * self.size*  math.sin(math.radians(self.result[3]*2.083 + 55)) + WindowY/(840/200) ],
+                   [ WindowX/2 + self.L_W  * self.size * math.cos(math.radians(self.result[3]*2.083 + 145)), WindowY/4 + self.L_W * self.size * math.sin(math.radians(self.result[3]*2.083 + 145)) + WindowY/(840/200) ] ,  
+                   [ WindowX/2 + self.L_N *  self.size * math.cos(math.radians(self.result[3]*2.083 + 235)), WindowY/4 + self.L_N  * self.size * math.sin(math.radians(self.result[3]*2.083 + 235)) + WindowY/(840/200) ]
+            ] , fill='red'        ) 
 ```
 
 The lenth and width of the arrow is determined in the initialisation of the class "def init(self, window)" with: 
 
 ```
-self.L_N = 0.1
+self.L_N = 0.2
 self.L_E = 3
-self.L_S = 0.1
-self.L_W = 2.5
+self.L_S = 0.2
+self.L_W = 4
 ```
 
 To simulate sensordata multiple spinboxes with variables to store the number in have been made. Also a submit button is needed to use the filled in number. This can be done with:
@@ -347,62 +345,72 @@ To simulate sensordata multiple spinboxes with variables to store the number in 
 The submit button for the temperature takes the value that was put into the spinbox and then displays that number and a color (blue to white to red) to show if that temperature is fine or is too hot. This is done with the function Update_temp. The value from Update_temp is then used int he Update_val function and looks like this:
 ```
 if (float(self.spinTemp) < 90): 
-    self.temperature.set(str(spinTemp) + " C" + degree_sign)
-    self.tempLabel.config(font=("Courier 30 bold"),bg='#%02x%02x%02x' % (75+int(round(self.spinTemp*2)), 75+int(round(self.spinTemp*2)), 255))
+    self.temperature.set(str(self.result[4]) + " C" + degree_sign)
+    self.tempLabel.config(font=("Courier 30 bold"),bg='#%02x%02x%02x' % (75+int(round(self.result[4]*2)), 75+int(round(self.spinTemp*2)), 255))
     self.tempLabel.place(relx=0.43,rely=0.7)
 
 else:
-    self.tempLabel.config(font=("Courier 30 bold"),bg='#%02x%02x%02x' % (255, 255+180-int(round(self.spinTemp)*2), 255+180-int(round(self.spinTemp)*2)))
+    self.tempLabel.config(font=("Courier 30 bold"),bg='#%02x%02x%02x' % (255, 255+180-int(round(self.result[4])*2), 255+180-int(round(self.result[4])*2)))
     self.tempLabel.place(relx=0.2, rely=0.7)
     self.temperature.set(" Warning"+ str(self.spinTemp) +" C"+degree_sign)
 ```
 
 To check if the button that starts the timer has already been pressed before, a start function has been made. 
 ```
-def start(self,event):
-    global countcheck
-    countcheck = countcheck + 1
-    if (countcheck == 1):
-        self.timer()
+def startB(self,event):
+        global countcheck
+        countcheck = countcheck + 1
+        global count
+        count = 0
+        if (countcheck == 1):
+            self.timer()
 ```
 
-After the button check is done, the timer has to be started and updated every second. Self.MainMidWindow.after(960,self.timer). This calls the same function after 970 miliseconds. Depending on how fast or slow your whole program runs, you will have to adjust the 960 miliseconds part of this last statement to change the time after which it recalls the function.
+After the button check is done, the timer has to be started and updated every second. Self.MainMidWindow.after(960,self.timer). This calls the same function after 1000 miliseconds. Depending on how fast or slow your whole program runs, you will have to adjust the 1000 miliseconds part of this last statement to change the time after which it recalls the function.
 
 ```
-def timer(self):
-        if(count==0):
-            self.d = str(self.t.get())
-            h,m,s = map(int,self.d.split(":"))
-
-            h = int(h)
-            m=int(m)
-            s= int(s)
-            if(s<59):
-                s+=1
-            elif(s==59):
-                s=0
-                if(m<59):
-                    m+=1
-                elif(m==59):
-                    h+=1
-            if(h<10):
-                h = str(0)+str(h)
-            else:
-                h= str(h)
-            if(m<10):
-                m = str(0)+str(m)
-            else:
-                m = str(m)
-            if(s<10):
-                s=str(0)+str(s)
-            else:
-                s=str(s)
-            self.d=h+":"+m+":"+s
-
-
-            self.t.set(self.d)
+    def timer(self):
             if(count==0):
-                self.MainMidWindow.after(960,self.timer)
+                self.d = str(self.t.get())
+                h,m,s = map(int,self.d.split(":"))
+                
+                h = int(h)
+                m=int(m)
+                s= int(s)
+                if(s<59):
+                    s+=1
+                elif(s==59):
+                    s=0
+                    if(m<59):
+                        m+=1
+                    elif(m==59):
+                        h+=1
+                if(h<10):
+                    h = str(0)+str(h)
+                else:
+                    h= str(h)
+                if(m<10):
+                    m = str(0)+str(m)
+                else:
+                    m = str(m)
+                if(s<10):
+                    s=str(0)+str(s)
+                else:
+                    s=str(s)
+                self.d=h+":"+m+":"+s
+                self.t.set(self.d)
+                if(count==0):
+                    self.MainMidWindow.after(1000,self.timer)
+```
+To reset the timer the function reset has been made.
+```
+def resetB(self):
+        global countcheck
+        if (countcheck >= 1):
+            global count
+            countcheck = 0
+            count = 1
+            self.t.set('00:00:00')
 ```
 
 Function round_rectangle is used to make rounded rectangles. Currently it is only being used in the battery but it could be used to make  other objects more visually pleasing too.
@@ -432,7 +440,7 @@ Function round_rectangle is used to make rounded rectangles. Currently it is onl
     
         return self.MainMidWindow.create_polygon(points, **kwargs, smooth=True)
 ```
-
+The last part of the code are the functions for the creation of the timer. More information can be found under running tests and the test file.
 
 
 * BotMidWindow
@@ -455,34 +463,99 @@ def function_choose(self):
         self.screen_clear()
         self.old_choice = self.choice
 
-    if(self.choice == 1): # or GPIO.input() == GPIO.HIGH):   ##if button 1 (top left) is pressed do functions below
-        self.screen_clear() #empty bottom screen
-        self.rotate_Poly()  #put object onto the screen
+    if(self.choice == 1): 
+        self.screen_clear() 
+        self.rotate_Poly()  
                   
-        elif(self.choice == 2): #if button 2 (mid left) is pressed do functions below
-            self.screen_clear() #empty bottom screen
-            self.rect = self.BotCanvas.create_rectangle(100, 100, 200, 200, fill='red')
+    elif(self.choice == 2): 
+        self.screen_clear() 
+        self.rect = self.BotCanvas.create_rectangle(100, 100, 200, 200, fill='red')
     
-        elif(self.choice == 3): #if button 3 (bottom left) is pressed do functions below
-            self.screen_clear() #empty Bottom screen
-            self.rect = self.BotCanvas.create_rectangle(200, 200, 200 + (self.angle//10)%1000 , 300, fill='blue')
+    elif(self.choice == 3):
+        self.screen_clear()
+        self.rect = self.BotCanvas.create_rectangle(200, 200, 200 + (self.angle//10)%1000 , 300, fill='blue')
    
-        elif(self.choice == 4): #if button 4 (top right) is pressed do functions below
-            self.screen_clear() #empty bottom screen
-            self.rect = self.BotCanvas.create_rectangle(300, 300, 400, 400, fill=self.color)
-         
-        elif(self.choice == 5): #if button 5 (top mid left) is pressed do functions below
-            self.screen_clear() #empty bottom screen
-            self.rect = self.BotCanvas.create_rectangle(200, 200, 200 + (self.angle//10)%1000 , 300, fill=self.color)
+    elif(self.choice == 4): 
+        self.screen_clear() 
+        self.rect = self.BotCanvas.create_rectangle(300, 300, 400, 400, fill=self.color)
 
-        elif(self.choice == 6): #if button 6 (bottom mid left) is pressed do functions below
-            self.screen_clear() #empty bottom screen
-            self.temp_gradient()
+    elif(self.choice == 5):
+        self.screen_clear() 
+        self.rect = self.BotCanvas.create_rectangle(200, 200, 200 + (self.angle//10)%1000 , 300, fill=self.color)
 
-        elif(self.choice == 7): #if button 7 (bottom right) is pressed do functions below
-            self.screen_clear() #empty bottom screen
+    elif(self.choice == 6): 
+        self.screen_clear() 
+        self.temp_gradient()
+
+    elif(self.choice == 7): 
+        self.screen_clear() 
+```
+Funtion update_val is usd to update the values of the gas/brake paddle bars.
+```
+    def update_val(self):
+        WindowX = self.window.winfo_height()
+        WindowX = self.window.winfo_width()
+
+        self.BotCanvas.delete("all")
+                
+        self.BotCanvas.create_text(WindowX/4, WindowY/28, text =  '{} {}'.format(int(self.result[0]), "%") , font=("Purisan", 20), fill="snow")
+        self.BotCanvas.create_text(WindowX/4, WindowY/14, text = '{} {}'.format(int(self.result[1]), "%"), font=("Purisan", 20), fill="snow") 
+        self.BotCanvas.create_rectangle(WindowX/3, WindowY/42, WindowX/3+self.result[0], WindowY/21, fill='red3')
+        self.BotCanvas.create_rectangle(WindowX/3, WindowY/16.8, WindowX/3+self.result[1], WindowY/12, fill='green2')
+WindowY/(840/((275-(spinGas))*1.83)), fill='green2'))
+
+        
+        self.angle += 1
+        self.color_update()
+
+```
+Class Layout binds all the buttons to the right functions.
+```
+self.master.bind('1', self.left1b_)
+self.master.bind('2', self.left2b_) #bind button "2" to function left2b_
+self.master.bind('3', self.left3b_) #bind button "3" to function left3b_
+self.master.bind('4', self.right1b_) #bind button "4" to function right1b_ 
+self.master.bind('5', self.right2b_) #bind button "5" to function right2b_
+self.master.bind('6', self.right3b_) #bind button "6" to function right3b_
+self.master.bind('7', self.right4b_) #bind button "7" to function right4b_
+self.master.bind('a', self.accelerate) #bind button "a" to function accelerate
+self.master.bind('d', self.decelerate) #bind button "d" to function decelerate
+self.master.bind('t', self.MainMidWindow.start)
+```
+Fuction display places all the buttons created in layout onto the window and then calls function screen_Updater.
+```
+def display(self):
+
+    #place the buttons created to display sensor data on the right place with the right size (rel = relative size compared to window it is placed inside of, so relative x/y position and height/width)
+    self.pack(fill = BOTH, expand  = 1)
+    self.left1_button.place(relx = 0, rely = 0, relwidth = self.width_split, relheight = self.height_split)
+    self.left2_button.place(relx = 0, rely =  self.height_split, relwidth = self.width_split, relheight = self.height_split)
+    self.left3_button.place(relx = 0, rely = 2* self.height_split, relwidth = self.width_split, relheight = self.height_split)        
+    self.right1_button.place(relx = 1-self.width_split, rely = 0, relwidth = self.width_split, relheight = self.height_split*0.75)
+    self.right2_button.place(relx = 1- self.width_split, rely = self.height_split*0.75, relwidth = self.width_split, relheight = self.height_split*0.75)
+    self.right3_button.place(relx = 1-self.width_split, rely = 2* self.height_split*0.75, relwidth = self.width_split, relheight = self.height_split*0.75)   
+    self.right4_button.place(relx = 1-self.width_split, rely = 2.25* self.height_split, relwidth = self.width_split, relheight = self.height_split*0.75)   
+    #Placement botmidwindow and mainmidwindow
+    self.mid1.place( relx = self.width_split, rely = 0,     relheight  =1., relwidth= 1 - 2*self.width_split)
+    self.mid2.place( relx = self.width_split, rely = 0.8,   relheight =0.2,  relwidth= 1 -  2*self.width_split)
+    #Update the screen
+    self.screen_Updater()
+```
+The function screen_Updater checks if any of the buttons was pressed and calls function update_val from the MainMidWindow, to update all the values on the main window.
+```
+        
+def screen_Updater(self):
+    self.BotMidWindow.function_choose()
+    self.MainMidWindow.Update_val(3) #Make sure gas and brake simulation is not affected.
+    self.master.after(10, self.screen_Updater)
+
 ```
 
+Under screen_Updater are the functions that all the buttons refer to. Each of these functions changes what value funtion_choose gets.
+```
+def left1_(self):
+    self.BotMidWindow.choice = 1 #if this left1_ function is called set choice in function_choose to be 1    
+```
 
 ## Deployment
 This code can be copied/downloaded onto your own computer and then run from your Python IDE.
