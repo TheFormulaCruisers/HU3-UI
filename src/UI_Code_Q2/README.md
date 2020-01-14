@@ -573,7 +573,7 @@ Please read [CONTRIBUTING.md](https://github.com/KevinEwoudLee/HU3-UI/blob/maste
 
 ## Possible changes for next iterations
 
-Currently all objects on the screen are removed. To increase the frames per second only the changing objects on the screen have to be removed or replaced. For nicer looks the temperature box can be changed. This can be done by removing the label and placing an object and then showing text in front of the object. The file is not started automatically. This has to be changed to automatic startup on boot.
+Currently all objects on the screen are removed. To increase the frames per second only the changing objects on the screen have to be removed or replaced. For nicer looks the temperature box can be changed. This can be done by removing the label and placing an object and then showing text in front of the object. The file is not started automatically. This has to be changed to automatic startup on boot. Adjust speed meter arrow to correrct formula.
 
 
 ## Authors
