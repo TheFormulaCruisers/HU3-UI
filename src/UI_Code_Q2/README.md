@@ -214,7 +214,7 @@ spi.mode = 0
 ```
 To send and receive data one line of code is used. The received variable(s) are stored in "result" and the transvered variable towards the C3 microcontroller is "msg". The function to send and receive is spi.xfer2. For different functions "spidev opions" can be looked up [(online)](http://tightdev.net/SpiDev_Doc.pdf).
 ```
-result = spi.xfer2(msg)
+sensorData = spi.xfer2(msg)
 
 ```
 As soon as the data has been collected from the C3, it is then stored onto a USB. The data is stored into a .csv file so all different sensor data can easily be distinguished from each other by commas. First, the file that will contain the data, has to be opened. After this is done, the file is checked if it is empty or not. If it is empty it will fill the first row with the text in the brackets of "file.write". Each word that is after a comma is put into a seperate column. Once this has been completed, the current time is put into the variable "now". The time wil always be put into the first column and then the sensor data will be put behind it. This is so strange sensor values can more easily be coupled to where and when it happened.
@@ -226,7 +226,7 @@ now = datetime.now()
 file.write(str(now)+","+str(i)+","+str(-i)+","+str(i-10)+","+str(i+5)+","+str(i*i)+"\n")
 file.flush()
 file.close()  
-##
+
 ```
 
 To be able to make a graphical user interface that contains objects, a window has to be made. This is what happens in the main file with the use of Tkinter. 
@@ -257,17 +257,18 @@ In "def __init__" all the variables are defined and the buttons, labels and boxe
 To place objects in the window, a canvas has to be made and placed in the window. This is done using the code below. The canvas function has a lot of different parameters. The first field is the window the canvas is created in, then the size, border and background are defined.  
 ```
 self.MainMidWindow = Canvas(self.window, width= 840, height=420, borderwidth = 0.0, highlightthickness=0, bg='black' ) 
-self.MainMidWindow.pack_propagate(0)
+self.MainMidWindow.pack(fill = BOTH, expand = 1)
 ```
 
-Labels are created to display the time and the temperature. The parameters used are what window the label is placed into, x offset, variable that will be shown in the label, background and foreground. With the following code a label is created, setup and placed:
+Labels are created to display the time and the temperature. The parameters used are what window the label is placed into, x offset, variable that will be shown in the label, background and foreground. With the following code a label is created, setup and placed at a relative point on the screen:
 ```
-self.tempLabel = Label(self.MainMidWindow, padx =10, textvariable=self.temperature, bg = 'black', fg = 'black')
-self.tempLabel.config(font=("Courier 20 bold"))
-self.tempLabel.place(x=380,y=340)
+self.battery = StringVar()
+self.batteryLabel = Label(self.MainMidWindow, textvariable=self.battery, bg = 'red', fg = 'black')
+self.batteryLabel.config(font=("Courier 20 bold"))
+self.batteryLabel.place(relx=0.05, rely=0.07)
 ```
 
-Function Update_val is the main function that is called. This function updates all the values in the canvas. First of all it checks what the window's width and height are so the whole screen can be scaled if needed.
+Function Update_val is the main function that is called. This function updates all the values in the canvas. First of all it checks what the window's width and height are so the whole screen can be scaled if needed (for example going from a 7 inch screen to a 5 inch screen).
 ```
 WindowY = self.window.winfo_height()
 WindowX = self.window.winfo_width()
@@ -280,37 +281,40 @@ self.MainMidWindow.delete("all")
 
 It then places a text under the speed meter to display how fast the car is going.
 ```
-self.text.append(self.MainMidWindow.create_text(WindowX/9.33, WindowY/1.5, text =  '{} {}'.format(int(result[3]), "km/h") , font=("Purisan", 20), fill="snow"))
+self.text.append(self.MainMidWindow.create_text(WindowX/2, WindowY/1.5, text =  '{} {}'.format(int(result[3]), "km/h") , font=("Purisan", 20), fill="snow"))
 ```
 
 To display the how full the battery still is, a battery icon has been made in the top left of the screen. The inside color of the battery has four stages. The percentage is constantly updated but the color will be "red" for 0-25% battery, "dark orange" for 25-50%, "gold" for 50-75% and "green3" for 75-100%. Changing the % value shown is done in the first line below and the if statements are for each of the different colors.
 
 ```
-self.my_rectangle = self.round_rectangle(WindowX/(840/35), WindowY/(840/40), WindowX/(840/255), WindowY/(840/115),  radius=20, fill="white")
+self.my_rectangle = self.round_rectangle(WindowX/(840/35), WindowY/(840/40), WindowX/(840/255), WindowY/(840/115), radius=20, fill="white")
 self.my_rectangle = self.round_rectangle(WindowX/(840/190), WindowY/(840/52), WindowX/(840/265), WindowY/(840/103), radius=20, fill="white")
 
-self.battery.set(str(int(self.result[2])) + "%")
-if(int(spinBattery)>75 and int(self.result[2])<=100):    
+
+self.battery.set(str(int(self.sensorData[2])) + "%")
+if(int(self.sensorData[2])>75 and int(self.sensorData[2])<=100):    
     self.batteryLabel.config(bg = 'green3')
-    self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/248), WindowY/(840/108),             radius=10, fill="green3")
+    self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/248), WindowY/(840/108), radius=10, fill="green3")
 
-if(int(self.result[2])>50 and int(self.result[2])<=75):
+if(int(self.sensorData[2])>50 and int(self.sensorData[2])<=75):
     self.batteryLabel.config(bg = 'gold')
-    self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/159), WindowY/(840/108), radius=10, fill="gold")
+    self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/200), WindowY/(840/108), radius=10, fill="gold")
 
-if(int(self.result[2])>25 and int(self.result[2])<=50):
+if(int(self.sensorData[2])>25 and int(self.sensorData[2])<=50):
     self.batteryLabel.config(bg = 'dark orange')
-    self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/118), WindowY/(840/108), radius=10, fill="dark orange")
+    self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/150), WindowY/(840/108), radius=10, fill="dark orange")
             
-if(int(self.result[2])>=0) and int(self.result[2])<=25:
+if(int(self.sensorData[2])>=0) and int(self.sensorData[2])<=25:
     self.batteryLabel.config(bg = 'red')
-    self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/81), WindowY/(840/108), radius=10, fill="red")
+    self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/100), WindowY/(840/108), radius=10, fill="red")
+
 
 ```
 
-The speed display has to be created. This is done using the clock code that can be found under the header "running tests" shown at the start of this document. In the Update_val function it calls the functions tested in the clock code. 
+The speed and temperatur display have to be created. This is done using the clock code that can be found under the header "running tests" shown at the start of this document. In the Update_val function it calls the functions tested in the clock code. 
 ```
 self.speedMeter = self.make_speedmeter([WindowX/(840/200), WindowY/(840/190), WindowX/(840/650), WindowY/(840/650)])    
+self.tempMeter = self.make_speedmeter([WindowX/(840/20), WindowY/(840/200), WindowX/(840/250), WindowY/(840/450)], -120, 71, 5, 70)
 
 ```
 
@@ -354,6 +358,15 @@ else:
     self.tempLabel.place(relx=0.2, rely=0.7)
     self.temperature.set(" Warning"+ str(self.spinTemp) +" C"+degree_sign)
 ```
+
+When the temperature is above a certain value an image to show that the temperature is too high shows.
+
+```
+heat_img = Image.open("Heat_Symbol.jpg")
+heat_img = heat_img.resize((75, 75), Image.ANTIALIAS)
+self.image = ImageTk.PhotoImage(heat_img)
+``` 
+
 
 To check if the button that starts the timer has already been pressed before, a start function has been made. 
 ```
