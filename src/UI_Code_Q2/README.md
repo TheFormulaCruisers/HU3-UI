@@ -290,7 +290,6 @@ To display the how full the battery still is, a battery icon has been made in th
 self.my_rectangle = self.round_rectangle(WindowX/(840/35), WindowY/(840/40), WindowX/(840/255), WindowY/(840/115), radius=20, fill="white")
 self.my_rectangle = self.round_rectangle(WindowX/(840/190), WindowY/(840/52), WindowX/(840/265), WindowY/(840/103), radius=20, fill="white")
 
-
 self.battery.set(str(int(self.sensorData[2])) + "%")
 if(int(self.sensorData[2])>75 and int(self.sensorData[2])<=100):    
     self.batteryLabel.config(bg = 'green3')
@@ -307,25 +306,31 @@ if(int(self.sensorData[2])>25 and int(self.sensorData[2])<=50):
 if(int(self.sensorData[2])>=0) and int(self.sensorData[2])<=25:
     self.batteryLabel.config(bg = 'red')
     self.my_rectangle = self.round_rectangle(WindowX/(840/42), WindowY/(840/47), WindowX/(840/100), WindowY/(840/108), radius=10, fill="red")
-
-
 ```
 
-The speed and temperatur display have to be created. This is done using the clock code that can be found under the header "running tests" shown at the start of this document. In the Update_val function it calls the functions tested in the clock code. 
+The speed and temperatur displays have to be created. This is done using the clock code that can be found under the header "running tests" shown at the start of this document. In the Update_val function it calls the functions tested in the clock code. 
 ```
 self.speedMeter = self.make_speedmeter([WindowX/(840/200), WindowY/(840/190), WindowX/(840/650), WindowY/(840/650)])    
 self.tempMeter = self.make_speedmeter([WindowX/(840/20), WindowY/(840/200), WindowX/(840/250), WindowY/(840/450)], -120, 71, 5, 70)
 
 ```
 
-After the speed display has been created, the arrow pointing towards the speed has to be made and updated. This can only be done after the speed display has been made otherwise the arrow will be behind the speed display and cannot be seen anymore. This is done using:
+After the speed and temperature displays have been created, the arrows pointing towards the speed and temperature have to be made and updated. This can only be done after the speed and temperature displays have been made otherwise the arrows will be behind the displays and cannot be seen anymore. This is done using:
 
 ```
-self.pol = self.MainMidWindow.create_polygon(
-            [      [ WindowX/2 + self.L_S  * self.size * math.cos(math.radians(self.result[3]*2.083 + 55)) , WindowY/4 + self.L_S * self.size*  math.sin(math.radians(self.result[3]*2.083 + 55)) + WindowY/(840/200) ],
-                   [ WindowX/2 + self.L_W  * self.size * math.cos(math.radians(self.result[3]*2.083 + 145)), WindowY/4 + self.L_W * self.size * math.sin(math.radians(self.result[3]*2.083 + 145)) + WindowY/(840/200) ] ,  
-                   [ WindowX/2 + self.L_N *  self.size * math.cos(math.radians(self.result[3]*2.083 + 235)), WindowY/4 + self.L_N  * self.size * math.sin(math.radians(self.result[3]*2.083 + 235)) + WindowY/(840/200) ]
-            ] , fill='red'        ) 
+
+self.speedArrow = self.MainMidWindow.create_polygon(
+    [      [ WindowX/2 + self.L_S * self.size * (WindowX/840) * math.cos(math.radians(self.sensorData[3]*2.083 + 55)) , WindowY/4 + self.L_S * self.size* (WindowY/840) * math.sin(math.radians(self.sensorData[3]*2.083 + 55)) + WindowY/(840/200) ],
+           [ WindowX/2 + self.L_W * self.size * (WindowX/840) * math.cos(math.radians(self.sensorData[3]*2.083 + 145)), WindowY/4 + self.L_W * self.size * (WindowY/840) * math.sin(math.radians(self.sensorData[3]*2.083 + 145)) + WindowY/(840/200) ] ,  
+           [ WindowX/2 + self.L_N * self.size * (WindowX/840) * math.cos(math.radians(self.sensorData[3]*2.083 + 235)), WindowY/4 + self.L_N  * self.size * (WindowY/840) * math.sin(math.radians(self.sensorData[3]*2.083 + 235)) + WindowY/(840/200) ]
+    ] , fill='red'        ) 
+    
+self.temperatureArrow = self.MainMidWindow.create_polygon(
+    [      [ WindowX/6 + self.L_S * self.size * (WindowX/840) * math.cos(math.radians(self.sensorData[4]*2.083 + 50)) - WindowX/(840/10), WindowY/8 + self.L_S * self.size* (WindowY/840) * math.sin(math.radians(self.sensorData[4]*2.083 + 50)) + WindowY/(840/210) ],
+           [ WindowX/6 + self.L_W_temp * self.size * (WindowX/840) * math.cos(math.radians(self.sensorData[4]*2.083 + 140)) - WindowX/(840/10), WindowY/8 + self.L_W_temp * self.size * (WindowY/840) * math.sin(math.radians(self.sensorData[4]*2.083 + 140)) + WindowY/(840/210) ] ,  
+           [ WindowX/6 + self.L_N * self.size * (WindowX/840) * math.cos(math.radians(self.sensorData[4]*2.083 + 230)) - WindowX/(840/10), WindowY/8 + self.L_N  * self.size * (WindowY/840) * math.sin(math.radians(self.sensorData[4]*2.083 + 230)) + WindowY/(840/210) ]
+    ] , fill='red'        )
+ 
 ```
 
 The lenth and width of the arrow is determined in the initialisation of the class "def init(self, window)" with: 
@@ -337,36 +342,18 @@ self.L_S = 0.2
 self.L_W = 4
 ```
 
-To simulate sensordata multiple spinboxes with variables to store the number in have been made. Also a submit button is needed to use the filled in number. This can be done with:
-```
-        self.spinBreak = StringVar()
-        self.spinBox = Spinbox(self.MainMidWindow, from_=0, to=180, width = 5, bg = 'snow')
-        self.spinBox.place(x=150,y=200)
-        
-        self.sensorButton = Button(self.MainMidWindow, text = 'Load', command = self.useSensorData, bg = 'snow', height = 1)
-        self.sensorButton.place(x=220, y=100)
-```
-The submit button for the temperature takes the value that was put into the spinbox and then displays that number and a color (blue to white to red) to show if that temperature is fine or is too hot. This is done with the function Update_temp. The value from Update_temp is then used int he Update_val function and looks like this:
-```
-if (float(self.spinTemp) < 90): 
-    self.temperature.set(str(self.result[4]) + " C" + degree_sign)
-    self.tempLabel.config(font=("Courier 30 bold"),bg='#%02x%02x%02x' % (75+int(round(self.result[4]*2)), 75+int(round(self.spinTemp*2)), 255))
-    self.tempLabel.place(relx=0.43,rely=0.7)
-
-else:
-    self.tempLabel.config(font=("Courier 30 bold"),bg='#%02x%02x%02x' % (255, 255+180-int(round(self.result[4])*2), 255+180-int(round(self.result[4])*2)))
-    self.tempLabel.place(relx=0.2, rely=0.7)
-    self.temperature.set(" Warning"+ str(self.spinTemp) +" C"+degree_sign)
-```
-
 When the temperature is above a certain value an image to show that the temperature is too high shows.
 
 ```
+(code in def __init__)
 heat_img = Image.open("Heat_Symbol.jpg")
 heat_img = heat_img.resize((75, 75), Image.ANTIALIAS)
 self.image = ImageTk.PhotoImage(heat_img)
-``` 
 
+(codee in Update_val)
+if (float(self.sensorData[4]) >= 50): 
+self.tempImg.place(relx = 0.11, rely = 0.4)            
+```
 
 To check if the button that starts the timer has already been pressed before, a start function has been made. 
 ```
