@@ -557,6 +557,9 @@ def left1_(self):
     self.BotMidWindow.choice = 1 #if this left1_ function is called set choice in function_choose to be 1    
 ```
 
+## Previous versions
+The previous versions can still be found in the commented lines. Updates to previous iterations consist of changing the look of the temperature display, replacing input boxes with an array that contains all the sensor values and making the screen scalable.
+
 ## Deployment
 This code can be copied/downloaded onto your own computer and then run from your Python IDE.
 
