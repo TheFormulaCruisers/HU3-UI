@@ -558,6 +558,10 @@ def left1_(self):
 ## Previous versions
 The previous versions can still be found in the commented lines. Updates to previous iterations consist of changing the look of the temperature display, replacing input boxes with an array that contains all the sensor values and making the screen scalable.
 
+## Possible changes for next iterations
+
+Currently all objects on the screen are removed. To increase the frames per second only the changing objects on the screen have to be removed or replaced. The bottom part of the screen is currently being used for test data. This can be changed so that the buttons display the test data in a pop-up window. When the test data has been seen the window can be closed and the main screen will be fully on the screen again. Currently the file is not started automatically. This has to be changed to automatic startup on boot.
+
 ## Deployment
 This code can be copied/downloaded onto your own computer and then run from your Python IDE.
 
@@ -571,11 +575,6 @@ Testing this code on a Raspberry Pi can be done by copying the code onto a USB a
 
 If any changes need to be made, please first make a copy and then change what needs to be changed in there (fork the document/folder).
 Please read [CONTRIBUTING.md](https://github.com/KevinEwoudLee/HU3-UI/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests.
-
-## Possible changes for next iterations
-
-Currently all objects on the screen are removed. To increase the frames per second only the changing objects on the screen have to be removed or replaced. For nicer looks the temperature box can be changed. This can be done by removing the label and placing an object and then showing text in front of the object. The file is not started automatically. This has to be changed to automatic startup on boot. Adjust speed meter arrow to correrct formula.
-
 
 ## Authors
 
