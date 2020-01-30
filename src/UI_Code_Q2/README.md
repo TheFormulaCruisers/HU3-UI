@@ -492,22 +492,20 @@ def function_choose(self):
 ```
 Funtion update_val is usd to update the values of the gas/brake paddle bars.
 ```
-    def update_val(self):
-        WindowX = self.window.winfo_height()
-        WindowX = self.window.winfo_width()
+def update_val(self):
+    WindowY = self.window.winfo_height()
+    WindowX = self.window.winfo_width()
 
-        self.BotCanvas.delete("all")
-                
-        self.BotCanvas.create_text(WindowX/4, WindowY/28, text =  '{} {}'.format(int(self.result[0]), "%") , font=("Purisan", 20), fill="snow")
-        self.BotCanvas.create_text(WindowX/4, WindowY/14, text = '{} {}'.format(int(self.result[1]), "%"), font=("Purisan", 20), fill="snow") 
-        self.BotCanvas.create_rectangle(WindowX/3, WindowY/42, WindowX/3+self.result[0], WindowY/21, fill='red3')
-        self.BotCanvas.create_rectangle(WindowX/3, WindowY/16.8, WindowX/3+self.result[1], WindowY/12, fill='green2')
-WindowY/(840/((275-(spinGas))*1.83)), fill='green2'))
+    self.BotCanvas.delete("all")
 
-        
-        self.angle += 1
-        self.color_update()
+    self.BotCanvas.create_text(WindowX/3.5, WindowY/2, text =  '{} {}'.format(int(self.result[0]), "%") , font=("Purisan", 20), fill="snow")
+    self.BotCanvas.create_text(WindowX/3.5, WindowY/4, text = '{} {}'.format(int(self.result[1]), "%"), font=("Purisan", 20), fill="snow") 
+    self.BotCanvas.create_rectangle(WindowX/2.5, WindowY/6, WindowX/2.5+self.result[0], WindowY/3, fill='red3')
+    self.BotCanvas.create_rectangle(WindowX/2.5, WindowY/2.5, WindowX/2.5+self.result[1], WindowY/1.75, fill='green2')
 
+    self.angle += 1
+    self.color_update()
+    
 ```
 Class Layout binds all the buttons to the right functions.
 ```
